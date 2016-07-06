@@ -18,9 +18,13 @@
 </div>
 </body>
 <footer>
+    <script async defer src="built/init.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZJz-OC0HG2ogLZ1uP_51QJiKkHh2ap0g&callback=initMap&libraries=places"
     type="text/javascript"></script>
-    <script async defer src="static/js/script.js"></script>
-    <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+    <script src="externals/require.js"></script>
+    <script src="built/require-config.js"></script>
+    <script>
+        require(['built/test/test']);
+    </script>
 </footer>
 </html>
