@@ -1,3 +1,7 @@
+/**
+ * function req'd by Google Maps to begin the initialization process
+ * of the map
+ */
 function initMap(){
     var m = new GoogleMap();
 }
@@ -9,7 +13,7 @@ function initMap(){
  * lambdas are used to preserve the lexical 'this' in the class
  * functions.
  */
-class GoogleMap {
+export class GoogleMap {
     coords: Coords;
 
     gMap: any;
