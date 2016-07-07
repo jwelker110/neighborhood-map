@@ -9,6 +9,8 @@
   "files": [
     "./typings/index.d.ts",
     "./src/require-config.ts",
-    "./src/init.ts"
+    "./src/init.ts",
+    "./src/model.ts",
+    "./src/main.ts"
   ]
 }
