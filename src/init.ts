@@ -2,8 +2,9 @@
  * function req'd by Google Maps to begin the initialization process
  * of the map
  */
+var map: any;
 function initMap(){
-    var m = new GoogleMap();
+    map = new GoogleMap();
 }
 
 /**
@@ -13,12 +14,13 @@ function initMap(){
  * lambdas are used to preserve the lexical 'this' in the class
  * functions.
  */
-export class GoogleMap {
+class GoogleMap {
     coords: Coords;
 
     gMap: any;
     infoWindow: any;
     service: any;
+    places: any[];
 
     constructor(id: string = 'map'){
         this.coords = new Coords(30.488979499999996, -90.86757639999999);
@@ -41,6 +43,7 @@ export class GoogleMap {
      */
     serviceCallback = (results: any[], status: any) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
+            this.places = results;
             // create the markers
             for(var i = 0, l = results.length; i < l; i++){
                 this.createMarker(results[i]);
@@ -62,9 +65,17 @@ export class GoogleMap {
         google.maps.event.addListener(marker, 'click', () => {
             this.gMap.panTo(placeLoc);
             this.animateMarker(marker);
-            this.infoWindow.setContent(place.name);
-            this.infoWindow.open(this.gMap, marker);
-        })
+            this.setInfoWindow('Loading information...', marker);
+            // load up the information for the point of interest
+            // TODO and fill with text
+            // if not available then display message to user
+
+        });
+    };
+
+    setInfoWindow = (info: string, marker: any) => {
+        this.infoWindow.setContent(info);
+        this.infoWindow.open(this.gMap, marker);
     };
 
     /**
