@@ -21,6 +21,8 @@ class GoogleMap {
     infoWindow: any;
     service: any;
     places: any[];
+    radius: number;
+    searchType: string[];
 
     constructor(id: string = 'map'){
         this.coords = new Coords(30.488979499999996, -90.86757639999999);
@@ -30,32 +32,27 @@ class GoogleMap {
         });
         this.infoWindow = new google.maps.InfoWindow();
         this.service = new google.maps.places.PlacesService(this.gMap);
-        this.service.nearbySearch({
-            location: this.coords,
-            radius: 800,
-            type: ['food', 'store', 'poi']
-        }, this.serviceCallback)
+        this.radius = 800;
+        this.searchType = ['food', 'store', 'poi'];
     }
 
-    /***
-     * If the Google Place Service is available, we start
-     * placing markers.
+    /**
+     * this will perform a search for nearby places
+     * @param fn - the callback executed when the places are retrieved; receives results and status of request
      */
-    serviceCallback = (results: any[], status: any) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            this.places = results;
-            // create the markers
-            for(var i = 0, l = results.length; i < l; i++){
-                this.createMarker(results[i]);
-            }
-        }
+    nearbySearch = (fn: any) => {
+        this.service.nearbySearch({
+            location: this.coords,
+            radius: this.radius,
+            type: this.searchType
+        }, fn);
     };
 
     /**
      * Creates a marker for the given Place, and then places
      * it on the map and adds an event listener to it.
      */
-    createMarker = (place: any) => {
+    addMarker = (place: any) => {
         var placeLoc: Coords = place.geometry.location;
         var marker: any = new google.maps.Marker({
             map: this.gMap,
@@ -71,8 +68,18 @@ class GoogleMap {
             // if not available then display message to user
 
         });
+        return marker;
     };
 
+    removeMarker = (marker: any) => {
+        google.maps.event.clearListener(marker, 'click');
+    };
+
+    /**
+     * Sets the content of the info window for the given marker
+     * @param info {string} - the information to display
+     * @param marker {Object} - the marker to affect
+     */
     setInfoWindow = (info: string, marker: any) => {
         this.infoWindow.setContent(info);
         this.infoWindow.open(this.gMap, marker);
@@ -80,6 +87,7 @@ class GoogleMap {
 
     /**
      * Animates the given marker for 1.5 seconds
+     * @param marker {Object} - the marker
      */
     animateMarker = (marker: any) => {
         marker.setAnimation(google.maps.Animation.BOUNCE);
