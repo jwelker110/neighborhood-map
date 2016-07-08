@@ -8,13 +8,12 @@
     <title>Neighborhood Map</title>
 </head>
 <body>
-<div id="map">
-
-</div>
-<div class="container">
-    <div class="row">
-
-    </div>
+<div id="map"></div>
+<div id="list">
+    <input id="input-filter" data-bind="textInput: filter" type="text" placeholder="Filter by name"/>
+    <ul id="list-places" data-bind="foreach: locations">
+        <li data-bind="text: name, click: $parent.setCurrentLocation"></li>
+    </ul>
 </div>
 </body>
 <footer>
