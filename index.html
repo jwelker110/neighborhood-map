@@ -10,7 +10,7 @@
 <body>
 <div id="map"></div>
 <div id="list">
-    <input id="input-filter" data-bind="textInput: filter, event: { input: filterLocations }" type="text" placeholder="Filter by name"/>
+    <input class="form-control" id="input-filter" data-bind="textInput: filter, event: { input: filterLocations }" type="text" placeholder="Filter by name"/>
     <ul id="list-places" data-bind="foreach: filteredLocations">
         <li data-bind="text: name, visible: isMatched, click: $parent.setCurrentLocation"></li>
     </ul>
