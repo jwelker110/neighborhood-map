@@ -1,5 +1,39 @@
 #map {
     height: 100vh;
     width: 100vw;
+}
 
+#input-filter {
+}
+
+#list {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, .5);
+}
+
+#list-places {
+    padding: 5px;
+}
+
+#list-places:hover {
+    cursor: pointer;
+}
+
+#list-places li {
+    font-size: 18px;
+    padding: 2px 5px;
+}
+
+#list-places li:hover {
+    box-shadow: 1px 1px 5px 1px #4a4a4a;
+    background-color: rgba(255, 255, 255, .75);
+
+}
+
+ul {
+    list-style-type: none;
 }
