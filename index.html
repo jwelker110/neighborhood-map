@@ -10,9 +10,9 @@
 <body>
 <div id="map"></div>
 <div id="list">
-    <input id="input-filter" data-bind="textInput: filter" type="text" placeholder="Filter by name"/>
+    <input id="input-filter" data-bind="textInput: filter, event: { input: filterLocations }" type="text" placeholder="Filter by name"/>
     <ul id="list-places" data-bind="foreach: locations">
-        <li data-bind="text: name, click: $parent.setCurrentLocation"></li>
+        <li data-bind="text: name, visible: isMatched, click: $parent.setCurrentLocation"></li>
     </ul>
 </div>
 </body>
