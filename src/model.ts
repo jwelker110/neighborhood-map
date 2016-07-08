@@ -10,19 +10,16 @@ export class ViewModel {
 
     constructor(map: any){
         this.map = map;
-        this.filter = ko.observable('');
-        this.currentLocation = ko.observable();
-        this.info = ko.observable('');
         this.getNearbyLocations();
     }
 
     setLocations = (locations: any[]) => {
         // TODO check for empty and display message
-        this.locations(locations);
-        console.log(locations);
         for(let i = 0, l = locations.length; i < l; i++) {
-            this.locations()[i].marker = this.map.addMarker(this.locations()[i]);
+            locations[i].marker = this.map.addMarker(locations[i]);
+            locations[i].isMatched = ko.observable(true);
         }
+        this.locations(locations);
     };
 
     /**
@@ -50,6 +47,17 @@ export class ViewModel {
                 this.map.removeMarker(markers[i]);
             }
             this.setLocations(results);
+        }
+    };
+
+    filterLocations = (obj: any, event: any) => {
+        for(let i = 0, l = this.locations().length; i < l; i++) {
+            if(this.locations()[i].name.toLowerCase().indexOf(event.target.value.toLowerCase()) == -1) {
+                this.locations()[i].isMatched(false);
+            }
+            else {
+                this.locations()[i].isMatched(true);
+            }
         }
     };
 }
