@@ -62,7 +62,7 @@ class GoogleMap {
         google.maps.event.addListener(marker, 'click', () => {
             this.gMap.panTo(placeLoc);
             this.animateMarker(marker);
-            this.setInfoWindow('Loading information...', marker);
+            this.setInfoWindow(place.name, marker);
             // load up the information for the point of interest
             // TODO and fill with text
             // if not available then display message to user
