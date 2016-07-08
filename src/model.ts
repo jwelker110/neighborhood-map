@@ -53,8 +53,17 @@ export class ViewModel {
     };
 
     filterLocations = (obj: any, event: any) => {
-        this.filteredLocations(this.locations().filter(function(place){
-            return place.name.toLowerCase().indexOf(event.target.value.toLowerCase()) > -1;
+        var value = event.target.value.toLowerCase();
+        this.filteredLocations(this.locations().filter((place: any) => {
+            var match = place.name.toLowerCase().indexOf(value) > -1;
+            if(!match) {
+                place.marker.setMap(null);
+                return match;
+            }
+            if(!place.marker.map) {
+                place.marker.setMap(this.map.gMap);
+            }
+            return match;
         }));
     };
 }
