@@ -70,8 +70,9 @@ class GoogleMap {
         });
         return marker;
     };
-
+    // TODO REMOVE MARKERS/FILTER MARKERS
     removeMarker = (marker: any) => {
+        marker.setMap(null);
         google.maps.event.clearListener(marker, 'click');
     };
 
