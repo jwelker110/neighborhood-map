@@ -3,6 +3,7 @@ import * as ko from "knockout";
 export class ViewModel {
 
     locations: KnockoutObservableArray<any> = ko.observableArray([]);
+    filteredLocations: KnockoutObservableArray<any> = ko.observableArray([]);
     filter: KnockoutObservable<string> = ko.observable('');
     currentLocation: KnockoutObservable<any> = ko.observable();
     info: KnockoutObservable<string> = ko.observable('');
@@ -20,6 +21,7 @@ export class ViewModel {
             locations[i].isMatched = ko.observable(true);
         }
         this.locations(locations);
+        this.filteredLocations(locations);
     };
 
     /**
@@ -51,13 +53,8 @@ export class ViewModel {
     };
 
     filterLocations = (obj: any, event: any) => {
-        for(let i = 0, l = this.locations().length; i < l; i++) {
-            if(this.locations()[i].name.toLowerCase().indexOf(event.target.value.toLowerCase()) == -1) {
-                this.locations()[i].isMatched(false);
-            }
-            else {
-                this.locations()[i].isMatched(true);
-            }
-        }
+        this.filteredLocations(this.locations().filter(function(place){
+            return place.name.toLowerCase().indexOf(event.target.value.toLowerCase()) > -1;
+        }));
     };
 }
