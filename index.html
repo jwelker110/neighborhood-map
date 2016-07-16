@@ -12,8 +12,9 @@
 <div id="list">
     <input class="form-control" id="input-filter" data-bind="textInput: filter, event: { input: filterLocations }" type="text" placeholder="Filter by name"/>
     <ul id="list-places" data-bind="foreach: filteredLocations">
-        <li data-bind="text: name, visible: isMatched, click: $parent.setCurrentLocation"></li>
+        <li data-bind="text: name, click: $parent.setCurrentLocation"></li>
     </ul>
+    <p class="credits">Augmented by <a href="http://www.factual.com">Factual</a></p>
 </div>
 </body>
 <footer>
