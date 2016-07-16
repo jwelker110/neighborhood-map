@@ -89,7 +89,7 @@ class GoogleMap {
                     console.error(e);
                     resp = {
                         tel: 'Unlisted',
-                        website: 'http://google.com/search?1=' + results[i].name,
+                        website: 'https://google.com/search?q=' + results[i].name.replace(' ', '+'),
                         category_labels: ['Unknown']
                     };
                 }
