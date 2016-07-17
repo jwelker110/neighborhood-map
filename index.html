@@ -10,11 +10,21 @@
 <body>
 <div id="map"></div>
 <div id="list">
-    <input class="form-control" id="input-filter" data-bind="textInput: filter, event: { input: filterLocations }" type="text" placeholder="Filter by name"/>
+    <div id="input-filter-container">
+        <input class="form-control"
+               id="input-filter"
+               data-bind="textInput: filter, event: { input: filterLocations }"
+               type="text"
+               placeholder="Filter by name"/>
+        <a id="ptm-plus-to-minus">
+            <span id="ptm-vert"></span>
+            <span id="ptm-hor"></span>
+        </a>
+    </div>
     <ul id="list-places" data-bind="foreach: filteredLocations">
         <li data-bind="text: name, click: $parent.setCurrentLocation"></li>
     </ul>
-    <p class="credits">Augmented by <a href="http://www.factual.com">Factual</a></p>
+    <p class="credits">Augmented with <a href="http://www.factual.com">Factual</a></p>
 </div>
 </body>
 <footer>
