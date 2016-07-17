@@ -75,14 +75,14 @@ the [Udacity JavaScript Style Guide](http://udacity.github.io/frontend-nanodegre
 6. `python -m SimpleHTTPServer 8080`.
 7. You should be able to access the map in a web browser by typing in `localhost:8080`.
 8. Assuming you want to query [Factual's](https://www.factual.com/solutions/developers) API from the application 
-(Which you should), you need to [clone](https://github.com/jwelker110/neighborhood-map-backend) the backend repo, `cd` into the
-directory, and place your app key and secret in the `keys_example.json` file.
+(Which you should), you need to [clone](https://github.com/jwelker110/neighborhood-map-backend) the backend repo, `cd` into the directory, and place your app key and secret in the `keys_example.json` file.
 9. type `mv keys_example.json secret_keys.json`
 10. [Install](https://pip.pypa.io/en/stable/installing/) pip if you don't already have it.
 11. `pip install virtualenv`
 12. `virtualenv mapenv`
-13. `pip install -r requirements.txt`
-14. `python app.py` - Now you should have a webserver serving at localhost:8081
+13. `source mapenv/bin/activate`
+14. `pip install -r requirements.txt`
+15. `python app.py` - Now you should have a webserver serving at localhost:8081
 
 ### Setting up your computer
 
