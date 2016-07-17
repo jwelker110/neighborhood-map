@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <title>Neighborhood Map</title>
+</head>
+<body>
+<div id="map"></div>
+<div id="list" data-bind="css: isCollapsedComputed">
+    <div id="input-filter-container">
+        <input class="form-control"
+               id="input-filter"
+               data-bind="textInput: filter, event: { input: filterLocations, focus: expandList }"
+               type="text"
+               placeholder="Filter by name"/>
+        <a id="ptm-plus-to-minus" data-bind="click: toggleListCollapsed">
+            <span id="ptm-vert" data-bind="css: isPlusComputed"></span>
+            <span id="ptm-hor"></span>
+        </a>
+    </div>
+    <ul id="list-places" data-bind="foreach: filteredLocations">
+        <li data-bind="text: name, click: $parent.setCurrentLocation"></li>
+    </ul>
+    <p class="credits">Augmented with <a href="http://www.factual.com" target="_blank">Factual</a></p>
+</div>
+</body>
+<footer>
+    <script src="built/init.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZJz-OC0HG2ogLZ1uP_51QJiKkHh2ap0g&callback=initMap&libraries=places"
+    type="text/javascript"></script>
+    <script data-main="built/main" src="externals/require.js"></script>
+    <script src="built/require-config.js"></script>
+</footer>
+</html>
