@@ -50,10 +50,8 @@ class GoogleMap {
     /**
      * this will perform a search for nearby places
      * @param location - set of coordinates to search near
-     * @param fn
      */
-    search = (location: Coords = this.coords, fn: any) => {
-        this.searchCallback = fn;
+    search = (location: Coords = this.coords) => {
         this.service.nearbySearch({
             location: location,
             radius: this.radius,
