@@ -7,9 +7,6 @@ The map should present users with at least 5 locations/points of interest.
 Users should be able to select a location marker and be presented with that location's information, 
 queried from a 3rd party API.
 
-Checkout the [live]() version of this project (Please note: the backend is not configured and this live version
-will not contain details for any locations).
-
 ### Frameworks/technologies used
 - [Bootstrap CSS](http://getbootstrap.com/)
 - [Knockoutjs](https://knockoutjs.com/) - for Bootstrap
@@ -63,7 +60,6 @@ your UI and in your README that you are using Foursquare data.
 - Comments are present and effectively explain longer code procedures.
 - Code is formatted with consistent, logical, and easy-to-read formatting as described in 
 the [Udacity JavaScript Style Guide](http://udacity.github.io/frontend-nanodegree-styleguide/javascript.html).
-
 
 ### Setting up the project - using mac/linux terminal
 
