@@ -76,19 +76,21 @@ class GoogleMap {
             // why wait?
             let xhr = new XMLHttpRequest();
 
+            // Query the server, which will query the api on our behalf
             xhr.onreadystatechange = () => {
                 if(xhr.readyState !== XMLHttpRequest.DONE) {return;}
                 // kk got the response let's set up our info
                 var resp: any;
 
+                // we can't parse what isn't there so we need to try
                 try {
                     resp = JSON.parse(xhr.responseText)[0];
-                    if(!resp) {
+                    if(!resp) {  // this may be undefined so we have to check
                         throw new Error('Returned response was undefined. (Should be ok though)');
                     }
                 }
                 catch(e) {
-                    console.error(e);
+                    console.error(e);  // we can provide basic feedback for the user
                     resp = {
                         tel: 'Unlisted',
                         website: 'https://google.com/search?q=' + results[i].name.replace(' ', '+'),
@@ -104,6 +106,8 @@ class GoogleMap {
                 this.addMarker(results[i].marker, content);
             };
 
+            // query our server please
+            // TODO change from localhost in prod
             xhr.open('GET', encodeURI('http://localhost:8081/api/factual?name=' + results[i].name +
                     '&lat=' + results[i].geometry.location.lat()) +
                     '&lng=' + results[i].geometry.location.lng(), true);
