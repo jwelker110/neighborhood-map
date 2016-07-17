@@ -40,7 +40,8 @@ class GoogleMap {
 
         this.gMap = new google.maps.Map(document.getElementById(id), {
             center: coords,
-            zoom: zoom
+            zoom: zoom,
+            mapTypeControl: false
         });
         this.infoWindow = new google.maps.InfoWindow();
         this.service = new google.maps.places.PlacesService(this.gMap);
@@ -80,22 +81,25 @@ class GoogleMap {
             xhr.onreadystatechange = () => {
                 if(xhr.readyState !== XMLHttpRequest.DONE) {return;}
                 // kk got the response let's set up our info
-                var resp;
+                var resp: any;
 
                 try {
                     resp = JSON.parse(xhr.responseText)[0];
+                    if(!resp) {
+                        throw new Error('Returned response was undefined. (Should be ok though)');
+                    }
                 }
                 catch(e) {
                     console.error(e);
                     resp = {
                         tel: 'Unlisted',
                         website: 'https://google.com/search?q=' + results[i].name.replace(' ', '+'),
-                        category_labels: ['Unknown']
+                        category_labels: [['Unknown']]
                     };
                 }
 
                 results[i].tel = resp.tel;
-                results[i].website = resp.website;
+                results[i].website = resp.website ? resp.website : 'https://google.com/search?q=' + results[i].name.replace(' ', '+').replace('%20', '+');
                 results[i].cat_labels = resp.category_labels;
 
                 var content = this.generateLocationContent(results[i]);
@@ -115,20 +119,19 @@ class GoogleMap {
         }
     };
 
-    generateLocationContent(result: any) {
-        var cats = '';
-        var l = result.cat_labels.length;
-        for(let i = 0; i < l - 1; i++){
-            console.log(result.cat_labels[i]);
-            cats += result.cat_labels[i] + '/';
-        }
-        cats = l > 0 ? result.cat_labels[l -1] : '';
+    /**
+     * Generates html content of a place info
+     * @param place - the place we want to know about
+     * @returns {string} - string containing html formatting
+     */
+    generateLocationContent(place: any) {
+        var cats = place.cat_labels[0].join(', ');
         return (
             '<div class="info">' +
-            '<h4 class="info-title">' + result.name + '</h4>' +
+            '<h4 class="info-title">' + place.name + '</h4>' +
             '<p class="info-categories"><strong>Categories: </strong>' + cats + '</p>' +
-            '<p class="info-tel"><strong>Phone #: </strong>' + result.tel + '</p>' +
-            '<a class="info-website" href="' + result.website + '">Website</a>' +
+            '<p class="info-tel"><strong>Phone #: </strong>' + place.tel + '</p>' +
+            '<a class="info-website" href="' + place.website + '">Website</a>' +
             '</div>'
         );
     }
