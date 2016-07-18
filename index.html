@@ -11,24 +11,26 @@
 <div id="map"></div>
 <div id="list" data-bind="css: isCollapsedComputed">
     <div id="input-filter-container">
-        <input class="form-control"
-               id="input-filter"
-               data-bind="textInput: filter, event: { input: filterLocations, focus: expandList }"
-               type="text"
-               placeholder="Filter by name"/>
+        <form data-bind="">
+            <input class="form-control"
+                   id="input-filter"
+                   data-bind="textInput: filter, event: { input: filterLocations, focus: expandList }"
+                   type="text"
+                   placeholder="Filter by name"/>
+        </form>
         <a id="ptm-plus-to-minus" data-bind="click: toggleListCollapsed">
             <span id="ptm-vert" data-bind="css: isPlusComputed"></span>
             <span id="ptm-hor"></span>
         </a>
     </div>
     <ul id="list-places" data-bind="foreach: filteredLocations">
-        <li data-bind="text: name, click: $parent.setCurrentLocation"></li>
+        <li data-bind="click: $parent.setCurrentLocation"><span data-bind="text: name"></span><span></span></li>
     </ul>
     <p class="credits">Augmented with <a href="http://www.factual.com" target="_blank">Factual</a></p>
 </div>
 </body>
 <footer>
-    <script src="built/init.js"></script>
+    <script src="built/googlemap.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZJz-OC0HG2ogLZ1uP_51QJiKkHh2ap0g&callback=initMap&libraries=places"
     type="text/javascript"></script>
     <script data-main="built/main" src="externals/require.js"></script>
