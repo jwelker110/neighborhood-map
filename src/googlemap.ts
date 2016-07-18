@@ -66,7 +66,7 @@ class GoogleMap {
      */
     setNearbyLocations = (results: any[], status: number) : any[] => {
         if(status != google.maps.places.PlacesServiceStatus.OK) {return [];}
-
+        debugger;
         // remove the existing markers from the map
         for(let i = 0, l = this.markers.length; i < l; i++) {
             this.removeMarker(this.markers[i]);
