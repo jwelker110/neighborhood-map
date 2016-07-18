@@ -9,8 +9,9 @@
   "files": [
     "./typings/index.d.ts",
     "./src/require-config.ts",
-    "./src/init.ts",
+    "./src/googlemap.ts",
     "./src/model.ts",
-    "./src/main.ts"
+    "./src/main.ts",
+    "./src/foursquare.ts"
   ]
 }
