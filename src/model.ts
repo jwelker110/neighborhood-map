@@ -1,4 +1,5 @@
 import * as ko from "knockout";
+"use strict";
 
 export class ViewModel {
 
@@ -12,7 +13,7 @@ export class ViewModel {
 
     constructor(map: any){
         this.map = map;
-        this.map.search(undefined, this.searchCallback);
+
         this.isCollapsedComputed = ko.pureComputed(() => {
             return this.isListCollapsed() ? 'ptm-list-collapsed' : 'ptm-list-expanded';
         }, this);
@@ -20,6 +21,19 @@ export class ViewModel {
             return this.isListCollapsed() ? 'ptm-expanded' : 'ptm-collapsed';
         });
     }
+
+    searchSubmit = (obj: any, event: any) => {
+        if(this.filteredLocations().length > 0) {
+            this.setCurrentLocation(this.filteredLocations()[0]);
+            return;
+        }
+        // perform a search for the terms here
+
+    };
+
+    foursquareCallback = (resp: any) => {
+        this.setLocations(resp.response.venues);
+    };
 
     toggleListCollapsed = () => {
         this.isListCollapsed(!this.isListCollapsed());
@@ -49,5 +63,6 @@ export class ViewModel {
 
     filterLocations = (obj: any, event: any) => {
         this.setLocations(this.map.filterLocations(obj.filter));
+        this.expandList();
     };
 }
