@@ -1,11 +1,4 @@
-/**
- * function req'd by Google Maps to begin the initialization process
- * of the map
- */
-var map: any;
-function initMap(){
-    map = new GoogleMap(new Coords(30.4583, -91.1403));
-}
+"use strict";
 
 /**
  * Class that creates a Google Map in the element associated with
@@ -16,125 +9,104 @@ function initMap(){
  */
 class GoogleMap {
 
-    radius: number;
     gMap: any;
     infoWindow: any;
     service: any;
 
     coords: Coords;
 
-    searchType: string[];
     markers: any[] = [];
     locations: any[] = [];
 
     searchCallback: any;
 
-    constructor(coords: Coords,
-                radius: number = 800,
-                searchType: string[] = ['restaurant'],
-                id: string = 'map',
-                zoom: number = 15){
-        this.coords = coords;
-        this.radius = radius;
-        this.searchType = searchType;
+    /**
+     * Constructor for map object.
+     * @param coords - coordinates to center map on
+     * @param id - id string of the element that will hold the map
+     * @param zoom - "height" above the map
+     * @param locations - locations to add to the map
+     */
+    constructor(coords: Coords, id: string = 'map', zoom: number = 15){
 
         this.gMap = new google.maps.Map(document.getElementById(id), {
             center: coords,
             zoom: zoom,
-            mapTypeControl: false
+            mapTypeControl: false,
+            streetViewControl: false
         });
         this.infoWindow = new google.maps.InfoWindow();
         this.service = new google.maps.places.PlacesService(this.gMap);
+
     }
 
-    /**
-     * this will perform a search for nearby places
-     * @param location - set of coordinates to search near
-     */
-    search = (location: Coords = this.coords, fn: any) => {
-        this.searchCallback = fn;
-        this.service.nearbySearch({
-            location: location,
-            radius: this.radius,
-            type: this.searchType
-        }, this.setNearbyLocations);
+    foursquareCallback = (resp: any, callback: any) => {
+        this.setLocations(resp.response.venues);
+        if(typeof callback === 'function') { callback(resp); }
     };
 
     /**
-     * Should clear any markers from the map, and then set
-     * the locations on the map instance
+     *
      */
-    setNearbyLocations = (results: any[], status: number) : any[] => {
-        if(status != google.maps.places.PlacesServiceStatus.OK) {return [];}
-        debugger;
-        // remove the existing markers from the map
-        for(let i = 0, l = this.markers.length; i < l; i++) {
-            this.removeMarker(this.markers[i]);
+    setLocations = (locations: any[]) => {
+        for(let i = 0, l=locations.length; i < l; i++) {
+            // create the location on the map
+            locations[i].marker = this.createMarker(locations[i].location.lat, locations[i].location.lng);
         }
-        for(let i = 0, l = results.length; i < l; i++) {
-            results[i].marker = this.createMarker(results[i]);
-            // we need to go ahead and get info for each marker right meow
-            // why wait?
-            let xhr = new XMLHttpRequest();
-
-            // Query the server, which will query the api on our behalf
-            xhr.onreadystatechange = () => {
-                if(xhr.readyState !== XMLHttpRequest.DONE) {return;}
-                // kk got the response let's set up our info
-                var resp: any;
-
-                // we can't parse what isn't there so we need to try
-                try {
-                    resp = JSON.parse(xhr.responseText)[0];
-                    if(!resp) {  // this may be undefined so we have to check
-                        throw new Error('Returned response was undefined. (Should be ok though)');
-                    }
-                }
-                catch(e) {
-                    console.error(e);  // we can provide basic feedback for the user
-                    resp = {
-                        tel: 'Unlisted',
-                        website: 'https://google.com/search?q=' + results[i].name.replace(' ', '+'),
-                        category_labels: [['Unknown']]
-                    };
-                }
-
-                results[i].tel = resp.tel;
-                results[i].website = resp.website ? resp.website : 'https://google.com/search?q=' + results[i].name.replace(' ', '+').replace('%20', '+');
-                results[i].cat_labels = resp.category_labels;
-
-                var content = this.generateLocationContent(results[i]);
-                this.addMarker(results[i].marker, content);
-            };
-
-            // query our server please
-            // TODO change from localhost in prod
-            xhr.open('GET', encodeURI('http://localhost:8081/api/factual?name=' + results[i].name +
-                    '&lat=' + results[i].geometry.location.lat()) +
-                    '&lng=' + results[i].geometry.location.lng(), true);
-            xhr.send();
-
-        }
-
-        this.locations = results;
-        if(this.searchCallback) {
-            this.searchCallback(results);
-        }
+        this.addMarkersRecursively(locations, locations.length - 1);
+        this.locations = locations;
+        console.log(this.locations);
     };
 
     /**
-     * Generates html content of a place info
-     * @param place - the place we want to know about
+     * Recurse so they pop in one at a time
+     * @param locations - array of locations to create markers for
+     * @param index - the current index
+     */
+    addMarkersRecursively = (locations: any[], index: number) => {
+        if(index < 0) { return; }
+        setTimeout(() => {
+            this.addMarker(locations[index].marker, this.getLocationContent(locations[index]));
+            this.addMarkersRecursively(locations, index - 1);
+        }, 100);
+
+    };
+
+    createStreetView = (lat: number, lng: number, id: string, heading: number = 35, pitch: number = 0) => {
+        return new google.maps.StreetViewPanorama(
+            document.getElementById(id), {
+                position: new Coords(lat, lng),
+                pov: {
+                    heading: heading,
+                    pitch: pitch
+                }
+            }
+        );
+    };
+
+    /**
+     * Generates html representation of place
+     * @param place - the place we want to represent
      * @returns {string} - string containing html formatting
      */
-    generateLocationContent(place: any) {
-        var cats = place.cat_labels[0].join(', ');
+    getLocationContent(place: any) {
+        let title = '<h4 class="info-title">' + place.name + '</h4>';
+        let streetViewContainer = '<div id="' + 'streetview' + '"></div>';
+        let url = place.url ? '<a class="info-website" href="' + place.url + '">On the Web</a>' : '';
+
+        let checkinsCount = place.stats ? place.stats.checkinsCount ? place.stats.checkinsCount : 'Unknown' : 'Unavailable';
+        let checkins = '<div class="info-checkins">Total check-ins: <strong>' + checkinsCount + '</strong></div>';
+
+        let hereNowSummary = place.hereNow ? place.hereNow.summary ? place.hereNow.summary : 'Unknown visitors' : 'Visitors unavailable';
+        let hereNow = '<div class="info-checkins">' + hereNowSummary + ' right now.</div>';
+
         return (
             '<div class="info">' +
-            '<h4 class="info-title">' + place.name + '</h4>' +
-            '<p class="info-categories"><strong>Categories: </strong>' + cats + '</p>' +
-            '<p class="info-tel"><strong>Phone #: </strong>' + place.tel + '</p>' +
-            '<a class="info-website" href="' + place.website + '">Website</a>' +
+                title +
+                url +
+                checkins +
+                hereNow +
+                streetViewContainer +
             '</div>'
         );
     }
@@ -149,14 +121,12 @@ class GoogleMap {
 
     /**
      * Creates a map marker for the provided place
-     * @param place - place to associate with marker
+     * @param lat - latitude
+     * @param lng - longitude
      * @returns {google.maps.Marker}
      */
-    createMarker = (place: any): any => {
-        var placeLoc = new Coords(
-            place.geometry.location.lat(),
-            place.geometry.location.lng()
-        );
+    createMarker = (lat: number, lng: number): any => {
+        var placeLoc = new Coords(lat, lng);
         return new google.maps.Marker({
             map: null,
             position: placeLoc
@@ -176,6 +146,13 @@ class GoogleMap {
             this.animateMarker(marker);
             this.infoWindow.setContent(markerInfo);
             this.infoWindow.open(this.gMap, marker);
+            this.gMap.setStreetView(
+                this.createStreetView(
+                    marker.position.lat(),
+                    marker.position.lng(),
+                    'streetview'
+                )
+            );
         });
     };
 
@@ -188,6 +165,10 @@ class GoogleMap {
         google.maps.event.clearListeners(marker, 'click');
     };
 
+    /**
+     * Trigger the click event associated with the marker
+     * @param marker - the marker to trigger
+     */
     triggerMarker = (marker: any) => {
         google.maps.event.trigger(marker, 'click');
     };
