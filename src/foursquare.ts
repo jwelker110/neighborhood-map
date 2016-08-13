@@ -43,6 +43,10 @@ export class FourSquare {
         return 'query=' + query;
     };
 
+    nearParams = (locale: string) => {
+        return 'near=' + locale;
+    };
+
     /**
      * Perform a venue search with the provided parameters
      * @param params {Array} - parameters to include in the query url
@@ -61,7 +65,6 @@ export class FourSquare {
             var resp = JSON.parse(xhr.responseText);
             if(resp.meta.code != 200) { return; }  // something went wrong querying the API
             // let's call our callback meow
-            console.log(resp);
             if(callback) { callback(resp); }
         };
 
