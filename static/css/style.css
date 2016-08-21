@@ -1,198 +1,159 @@
 ul {
-    list-style-type: none;
-}
-
-.info {
-    max-width: 320px;
-}
-
-.info-title {
-    padding: 0 5px;
-    text-align: center;
-}
-
-.info-img {
-    display: block;
-    margin: 0px auto;
-}
-
-.info-text {
-    text-align: left;
-    margin-top: 5px;
-}
-
-.gm-style-iw {
-    text-align: center;
-}
-
-.credits {
-    position: fixed;
-    bottom: 0px;
-    background-color: rgba(255, 255, 255, .9);
-    padding: 5px;
-    border-radius: 3px;
+  list-style-type: none;
 }
 
 #map {
-    height: 100vh;
-    width: 100vw;
+  height: 100vh;
+  width: 100vw;
 }
 
-#input-filter {
-    float: left;
-    width: calc(100% - 42px);
-}
-
-#input-filter-container {
-    display: inline-block;
-    width: 100%;
-    padding: 2px 0px;
-}
-
-#list {
-    position: fixed;
-    top: 0;
-    left: 0;
-    min-width: 320px;
-    background-color: rgba(255, 255, 255, .5);
-    padding: 3px 5px 40px;
-    overflow-y: auto;
-    /*height: 40px;*/
-}
-
-#list-places {
-    padding: 0px;
-}
-
-#list-places:hover {
-    cursor: pointer;
-}
-
-#list-places > li {
-    font-size: 18px;
-    padding: 2px 5px;
-    border-radius: 3px;
-}
-
-#list-places > li:hover {
-    box-shadow: 1px 1px 5px 1px #bbb;
-    background-color: rgba(255, 255, 255, .75);
-}
-/**
- * The zeroes are there so I don't have to add 'px' in chrome dev tools
- */
-#list-places > li:active {
-    -webkit-box-shadow: 0px 0px 3px 0px #bbb;
-    -moz-box-shadow: 0px 0px 3px 0px #bbb;
-    box-shadow: 0px 0px 3px 0px #bbb;
+#streetview {
+  height: 200px;
+  min-width: 320px;
 }
 
 /**
- * Plus to Minus
+ * NEW LIST CSS
  */
-
-@keyframes ptm-collapsed {
-    from {}
-    to {
-        transform: rotate(-90deg);
-        transform-origin: 50% 50%;
-    }
+#places-container {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  max-width: 480px;
+  padding: 5px;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-@keyframes ptm-expanded {
-    from {
-        transform: rotate(-90deg);
-        transform-origin: 50% 50%;
-    }
-    to {
-        transform: rotate(0deg);
-        transform-origin: 50% 50%;
-    }
+/* Container End */
+
+#list-filter-controls {
+  background-color: #fff;
+  border: solid 1px #ccc;
+  margin: 0 auto;
 }
 
-#ptm-plus-to-minus {
-    margin: 2px 1px;
-    float: right;
-    background: #fff;
-    position: relative;
-    height: 30px;
-    width: 30px;
-    display: inline-block;
-    border-radius: 3px;
-    box-shadow: 0px 0px 5px 0px #4a4a4a;
+.list-control-group {
+  width: 100%;
 }
 
-
-#ptm-plus-to-minus:hover {
-    cursor: pointer;
-    box-shadow: 0px 0px 3px 0px #4a4a4a;
+.list-control {
+  width: 50%;
+  border: none;
+  border-radius: 0px;
+  margin: 0 auto;
 }
 
-#ptm-plus-to-minus:active {
-    cursor: pointer;
-    box-shadow: inset 0px 0px 3px 0px #4a4a4a;
+.selected {
+  background-color: #efefef;
+  box-shadow: inset 0px 1px 1px 1px #777;
 }
 
-#ptm-vert,
-#ptm-hor {
-    border: solid 1px #bbb;
-    display: inline-block;
-    position: absolute;
+.btn:focus,
+.btn:active,
+.btn:active:focus {
+  border: none;
+  outline: none;
 }
 
-#ptm-vert {
-    margin: 5px auto;
-    height: 20px;
-    left: 14px;
+/* Controls End */
+
+#list-filter-container {
+  border: solid 1px #ccc;
 }
 
-#ptm-hor {
-    margin: auto 5px;
-    width: 20px;
-    top: 14px;
+#list-filter-input {
+  width: 100%;
+  padding: 0 5px;
+  height: 32px;
+  border-radius: 0px;
+  border: none;
 }
 
-#ptm-vert.ptm-expanded {
-    animation-name: ptm-expanded;
-    animation-duration: .4s;
-    animation-timing-function: linear;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
+#list-filter-input:focus {
+  outline: none;
 }
 
-#ptm-vert.ptm-collapsed {
-    animation-name: ptm-collapsed;
-    animation-duration: .4s;
-    animation-timing-function: linear;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-}
+/* Filter End */
 
-/**
- * List PTM addon
- */
-@keyframes ptm-list-collapsed-anim {
-    from {}
-    to {
-        max-height: 0vh;
-    }
-}
-
-.ptm-list-collapsed {
-    transition: height .4s;
-    transition-timing-function: linear;
-    height: 0px !important;
-    border-radius: 3px;
+#list-container {
+  max-height: 0px;
+  margin-top: -1px;
+  overflow-y: auto;
+  border: none;
+  transition: max-height .5s linear;
 }
 
 .ptm-list-expanded {
-    transition: height .4s;
-    transition-timing-function: linear;
-    height: 100vh;
+  max-height: 192px !important;
+  border: solid 1px #ccc !important;
 }
 
-@media screen and (max-width: 480px) {
-    #list {
-        min-width: 100vw;
-    }
+#list-places {
+  max-width: 480px;
+  max-height: 1000%;
+  background-color: #fff;
+}
+
+.list-place {
+  padding: 2px;
+  font-size: 1em;
+}
+
+/* List End */
+.list-pulldown-container {
+  display: block;
+  margin: -1px auto 0px;
+  width: 80px;
+}
+
+.list-pulldown-container:hover {
+  cursor: pointer;
+}
+
+.list-pulldown {
+  height: 0px;
+  color: #333;
+  line-height: 30px;
+  text-align: center;
+}
+
+.list-pulldown-border {
+  width: 80px;
+  display: block;
+  margin: 0 auto;
+  border-top: solid 30px #fff;
+  border-left: solid 10px transparent;
+  border-right: solid 10px transparent;
+}
+
+/**
+ * END LIST CSS
+ */
+
+.info {
+  text-align: center;
+}
+
+.info-title {
+  padding: 0 5px;
+}
+
+.gm-style-iw {
+  text-align: center;
+}
+
+.credits {
+  position: fixed;
+  bottom: 0px;
+  background-color: rgba(255, 255, 255, .9);
+  padding: 5px;
+  border-radius: 3px;
+}
+
+/**
+ * Google Map classes/id
+ */
+.gm-iv-address {
+  display: none !important;
 }
