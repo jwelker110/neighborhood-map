@@ -9,27 +9,38 @@
 </head>
 <body>
 <div id="map"></div>
-<div id="list" data-bind="css: isCollapsedComputed">
-    <div id="input-filter-container">
-        <form data-bind="">
-            <input class="form-control"
-                   id="input-filter"
-                   data-bind="textInput: filter, event: { input: filterLocations, focus: expandList }"
-                   type="text"
-                   placeholder="Filter by name"/>
-        </form>
-        <a id="ptm-plus-to-minus" data-bind="click: toggleListCollapsed">
-            <span id="ptm-vert" data-bind="css: isPlusComputed"></span>
-            <span id="ptm-hor"></span>
-        </a>
+<div id="places-container">
+    <div id="list-filter-controls">
+        <div class="btn-group list-control-group">
+            <button class="btn btn-default list-control"
+                    data-bind="click: setAction.bind($data, 'filter'), css: {selected: searchAction() == 'filter'}">Filter</button>
+            <button class="btn btn-default list-control"
+                    data-bind="click: setAction.bind($data, 'search'), css: {selected: searchAction() == 'search'}">Search</button>
+        </div>
     </div>
-    <ul id="list-places" data-bind="foreach: filteredLocations">
-        <li data-bind="click: $parent.setCurrentLocation"><span data-bind="text: name"></span><span></span></li>
-    </ul>
-    <p class="credits">Augmented with <a href="http://www.factual.com" target="_blank">Factual</a></p>
+    <div id="list-filter-container">
+        <form data-bind="event: {submit: searchSubmit}">
+            <input id="list-filter-input"
+                   data-bind="textInput: filter, event: {input: filterLocations}"
+                   type="text"
+                   autocomplete="off">
+        </form>
+    </div>
+    <div id="list-container" data-bind="css: isCollapsedComputed">
+        <div id="list-places" data-bind="foreach: filteredLocations">
+            <div class="list-place" data-bind="click: $parent.setCurrentLocation">
+                <span data-bind="text: name"></span>
+            </div>
+        </div>
+    </div>
+    <div class="list-pulldown-container" data-bind="click: toggleListCollapsed">
+        <div class="list-pulldown"><span class="glyphicon" data-bind="css: listPulldownComputed"></span></div>
+        <div class="list-pulldown-border"></div>
+    </div>
 </div>
 </body>
 <footer>
+    <script src="built/init.js"></script>
     <script src="built/googlemap.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZJz-OC0HG2ogLZ1uP_51QJiKkHh2ap0g&callback=initMap&libraries=places"
     type="text/javascript"></script>
