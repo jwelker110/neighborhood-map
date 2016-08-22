@@ -12,6 +12,7 @@
     "./src/googlemap.ts",
     "./src/model.ts",
     "./src/main.ts",
-    "./src/foursquare.ts"
+    "./src/foursquare.ts",
+    "./src/init.ts"
   ]
 }
