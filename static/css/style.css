@@ -105,11 +105,19 @@ ul {
 
 .list-place:hover {
   cursor: pointer;
-  color: #5db774 !important;
-  outline: solid 1px #5db774;
+  background-color: rgba(66, 133, 244, 0.25);
+  color: #4285f4 !important;
+  outline: solid 1px #4285f4;
+}
+
+.list-place-name {
+  display: inline-block;
+  max-width: 60%;
 }
 
 .list-place-category {
+  display: inline-block;
+  max-width: 40%;
   float: right;
   margin-right: 10px;
 }
@@ -136,13 +144,13 @@ ul {
   width: 80px;
   display: block;
   margin: 0 auto;
-  border-top: solid 30px #fff;
+  border-top: solid 30px #4285f4;
   border-left: solid 10px transparent;
   border-right: solid 10px transparent;
 }
 
 .glyphicon {
-  color: #4285f4;
+  color: #fff;
 }
 
 /**
