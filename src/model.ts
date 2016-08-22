@@ -5,30 +5,49 @@ export class ViewModel {
 
     locations = ko.observableArray([]);
     filteredLocations = ko.observableArray([]);
-    filter = '';
+    filter = ko.observable('');
+    searchAction = ko.observable('filter');
     map: any;
     isListCollapsed = ko.observable(true);
     isCollapsedComputed: KnockoutComputed<any>;
-    isPlusComputed: KnockoutComputed<any>;
+    listPulldownComputed: KnockoutComputed<any>;
+    loading = ko.observable(true);
 
     constructor(map: any){
         this.map = map;
 
         this.isCollapsedComputed = ko.pureComputed(() => {
-            return this.isListCollapsed() ? 'ptm-list-collapsed' : 'ptm-list-expanded';
+            return this.isListCollapsed() ? '' : 'list-expanded';
         }, this);
-        this.isPlusComputed = ko.pureComputed(() => {
-            return this.isListCollapsed() ? 'ptm-expanded' : 'ptm-collapsed';
+        this.listPulldownComputed = ko.pureComputed(() => {
+            if(this.filteredLocations().length == 0) {
+                return 'glyphicon-chevron-down';
+            }
+            return this.isListCollapsed() ? 'glyphicon-chevron-down' : 'glyphicon-chevron-up';
         });
     }
 
     searchSubmit = (obj: any, event: any) => {
-        if(this.filteredLocations().length > 0) {
+        if(this.filteredLocations().length > 0 && this.searchAction() == 'filter') {
             this.setCurrentLocation(this.filteredLocations()[0]);
             return;
+        } else if (this.searchAction() == 'search') {
+            setTimeout(function() {
+                this.loading(true);
+            });
+            console.log('search performed');
+            this.expandList();
         }
-        // perform a search for the terms here
+    };
 
+    setAction = (action: string) => {
+        this.searchAction(action);
+        if(this.searchAction() == 'filter') {
+            this.expandList();
+            this.filterLocations({filter: this.filter}, {})
+        } else if(this.searchAction() == 'search') {
+            this.collapseList();
+        }
     };
 
     foursquareCallback = (resp: any) => {
@@ -41,6 +60,10 @@ export class ViewModel {
 
     expandList = () => {
         this.isListCollapsed(false);
+    };
+
+    collapseList = () => {
+        this.isListCollapsed(true);
     };
 
     setLocations = (locations: any[]) => {
@@ -62,6 +85,7 @@ export class ViewModel {
     };
 
     filterLocations = (obj: any, event: any) => {
+        if(this.searchAction() == 'search') {return;}
         this.setLocations(this.map.filterLocations(obj.filter));
         this.expandList();
     };
