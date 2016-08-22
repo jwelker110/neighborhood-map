@@ -55,7 +55,6 @@ class GoogleMap {
         }
         this.addMarkersRecursively(locations, locations.length - 1);
         this.locations = locations;
-        console.log(this.locations);
     };
 
     /**
@@ -64,12 +63,14 @@ class GoogleMap {
      * @param index - the current index
      */
     addMarkersRecursively = (locations: any[], index: number) => {
-        if(index < 0) { return; }
+        if(index < 0) {
+            google.maps.event.trigger(map, 'resize');
+            return;
+        }
         setTimeout(() => {
-            this.addMarker(locations[index].marker, this.getLocationContent(locations[index]));
+            this.addMarker(locations[index]);
             this.addMarkersRecursively(locations, index - 1);
-        }, 100);
-
+        }, 50);
     };
 
     createStreetView = (lat: number, lng: number, id: string, heading: number = 35, pitch: number = 0) => {
@@ -103,9 +104,6 @@ class GoogleMap {
         return (
             '<div class="info">' +
                 title +
-                url +
-                checkins +
-                hereNow +
                 streetViewContainer +
             '</div>'
         );
@@ -136,23 +134,23 @@ class GoogleMap {
     /**
      * Adds the provided marker to the map and sets the appropriate
      * listeners on the marker
-     * @param marker - the marker to add
-     * @param markerInfo - the string to display in the marker info window
+     * @param place - the place to add
      */
-    addMarker = (marker: any, markerInfo: string) => {
-        marker.setMap(this.gMap);
-        google.maps.event.addListener(marker, 'click', () => {
-            this.gMap.panTo(marker.position);
-            this.animateMarker(marker);
-            this.infoWindow.setContent(markerInfo);
-            this.infoWindow.open(this.gMap, marker);
+    addMarker = (place: any) => {
+        place.marker.setMap(this.gMap);
+        google.maps.event.addListener(place.marker, 'click', () => {
+            this.animateMarker(place.marker, 2000);
+            this.infoWindow.setContent(this.getLocationContent(place));
+            this.infoWindow.open(this.gMap, place.marker);
             this.gMap.setStreetView(
                 this.createStreetView(
-                    marker.position.lat(),
-                    marker.position.lng(),
+                    place.marker.position.lat(),
+                    place.marker.position.lng(),
                     'streetview'
                 )
             );
+            this.gMap.panTo(place.marker.getPosition());
+            this.gMap.panBy(0, -200);
         });
     };
 
@@ -185,14 +183,14 @@ class GoogleMap {
         }, animateTime);
     };
 
-    filterLocations = (filter: string) => {
+    filterLocations = (filter: KnockoutObservable<string>) => {
         return this.locations.filter((location: any) => {
-         var match = location.name.toLowerCase().indexOf(filter.toLowerCase()) > -1;
+         var match = location.name.toLowerCase().indexOf(filter().toLowerCase()) > -1;
           if(!match) {  // get it outta here!
               this.removeMarker(location.marker);
           }
           else if(!location.marker.map) {  // jk want you back
-              this.addMarker(location.marker, location.name);
+              this.addMarker(location);
           }
           return match;
         });
