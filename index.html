@@ -10,6 +10,15 @@
 <body>
 <div id="map"></div>
 <div id="places-container">
+    <div id="list-filter-container">
+        <form data-bind="event: {submit: searchSubmit}">
+            <input id="list-filter-input"
+                   data-bind="textInput: filter, event: {input: filterLocations}"
+                   type="text"
+                   autocomplete="off"
+                   placeholder="Filter or search (e.g. food near Baton Rouge)">
+        </form>
+    </div>
     <div id="list-filter-controls">
         <div class="btn-group list-control-group">
             <button class="btn btn-default list-control"
@@ -18,18 +27,12 @@
                     data-bind="click: setAction.bind($data, 'search'), css: {selected: searchAction() == 'search'}">Search</button>
         </div>
     </div>
-    <div id="list-filter-container">
-        <form data-bind="event: {submit: searchSubmit}">
-            <input id="list-filter-input"
-                   data-bind="textInput: filter, event: {input: filterLocations}"
-                   type="text"
-                   autocomplete="off">
-        </form>
-    </div>
     <div id="list-container" data-bind="css: isCollapsedComputed">
         <div id="list-places" data-bind="foreach: filteredLocations">
             <div class="list-place" data-bind="click: $parent.setCurrentLocation">
-                <span data-bind="text: name"></span>
+                <h4><span data-bind="text: name"></span> <small class="list-place-category" data-bind="text: categories && categories.length > 0 ? categories[0].shortName : ''"></small></h4>
+                <div data-bind="text: (hereNow && hereNow.summary ? hereNow.summary : 'Here now unavailable') + ' right now'"></div>
+                <div data-bind="text: 'Total checkins: ' + (stats && stats.checkinsCount != undefined ? stats.checkinsCount : 'Unavailable')"></div>
             </div>
         </div>
     </div>
