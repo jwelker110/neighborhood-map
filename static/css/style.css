@@ -21,7 +21,7 @@ ul {
   width: 100%;
   max-width: 480px;
   padding: 5px;
-  max-height: 300px;
+  max-height: calc(100vh - 50px);
   overflow-y: auto;
 }
 
@@ -38,6 +38,7 @@ ul {
 }
 
 .list-control {
+  color: #4285f4;
   width: 50%;
   border: none;
   border-radius: 0px;
@@ -46,7 +47,7 @@ ul {
 
 .selected {
   background-color: #efefef;
-  box-shadow: inset 0px 1px 1px 1px #777;
+  box-shadow: inset 0px 1px 1px 1px #4285f4;
 }
 
 .btn:focus,
@@ -68,6 +69,7 @@ ul {
   height: 32px;
   border-radius: 0px;
   border: none;
+  font-variant: small-caps;
 }
 
 #list-filter-input:focus {
@@ -84,8 +86,8 @@ ul {
   transition: max-height .5s linear;
 }
 
-.ptm-list-expanded {
-  max-height: 192px !important;
+.list-expanded {
+  max-height: calc(100vh - 158px) !important;
   border: solid 1px #ccc !important;
 }
 
@@ -98,12 +100,24 @@ ul {
 .list-place {
   padding: 2px;
   font-size: 1em;
+  border-bottom: solid 1px #ccc;
+}
+
+.list-place:hover {
+  cursor: pointer;
+  color: #5db774 !important;
+  outline: solid 1px #5db774;
+}
+
+.list-place-category {
+  float: right;
+  margin-right: 10px;
 }
 
 /* List End */
 .list-pulldown-container {
   display: block;
-  margin: -1px auto 0px;
+  margin: 1px auto 0px;
   width: 80px;
 }
 
@@ -127,12 +141,18 @@ ul {
   border-right: solid 10px transparent;
 }
 
+.glyphicon {
+  color: #4285f4;
+}
+
 /**
  * END LIST CSS
  */
 
 .info {
   text-align: center;
+  overflow-y: auto;
+  max-height: 340px;
 }
 
 .info-title {
@@ -156,4 +176,21 @@ ul {
  */
 .gm-iv-address {
   display: none !important;
+}
+
+@media screen and (max-height: 675px) {
+  #streetview {
+    height: 160px;
+    min-width: 220px;
+  }
+
+  .info {
+    max-height: 340px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .info {
+    max-width: 290px;
+  }
 }
