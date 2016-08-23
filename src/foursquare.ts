@@ -51,8 +51,9 @@ export class FourSquare {
      * Perform a venue search with the provided parameters
      * @param params {Array} - parameters to include in the query url
      * @param callback {Function} - function to call when request is complete; passed in the JSON response.
+     * @param onError - callback called when the request encounters an error
      */
-    venuesSearch = (params: string[], callback: any) => {
+    venuesSearch = (params: string[], callback: any, onError: any) => {
         var ep = 'venues/search?';
 
         // generate our URL please
@@ -62,8 +63,11 @@ export class FourSquare {
 
         xhr.onreadystatechange = () => {
             if(xhr.readyState !== XMLHttpRequest.DONE) { return; }
-            var resp = JSON.parse(xhr.responseText);
-            if(resp.meta.code != 200) { return; }  // something went wrong querying the API
+            var resp = JSON.parse(xhr.responseText ? xhr.responseText : "{}");
+            if(!resp.meta || resp.meta.code != 200) {  // something went wrong querying the API
+                if(onError) { onError(); }
+                return;
+            }
             // let's call our callback meow
             if(callback) { callback(resp); }
         };
