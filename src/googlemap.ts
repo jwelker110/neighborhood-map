@@ -41,7 +41,7 @@ class GoogleMap {
     }
 
     foursquareCallback = (resp: any, callback: any) => {
-        this.setLocations(resp.response.venues);
+        this.setLocations(resp.response && resp.response.venues ? resp.response.venues : []);
         if(typeof callback === 'function') { callback(resp); }
     };
 
