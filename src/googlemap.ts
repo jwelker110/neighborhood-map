@@ -49,6 +49,8 @@ class GoogleMap {
      *
      */
     setLocations = (locations: any[]) => {
+        this.removeAllMarkers();
+        this.deleteAllMarkers();
         for(let i = 0, l=locations.length; i < l; i++) {
             // create the location on the map
             locations[i].marker = this.createMarker(locations[i].location.lat, locations[i].location.lng);
@@ -72,6 +74,18 @@ class GoogleMap {
             this.addMarkersRecursively(locations, index - 1);
         }, 50);
     };
+
+    removeAllMarkers = () => {
+        for(let i = 0; i < this.markers.length; i++) {
+            this.markers[i].setMap(null);
+        }
+    };
+
+    deleteAllMarkers = () => {
+        this.markers = [];
+    };
+
+
 
     createStreetView = (lat: number, lng: number, id: string, heading: number = 35, pitch: number = 0) => {
         return new google.maps.StreetViewPanorama(
@@ -137,6 +151,7 @@ class GoogleMap {
      * @param place - the place to add
      */
     addMarker = (place: any) => {
+        this.markers.push(place.marker);
         place.marker.setMap(this.gMap);
         google.maps.event.addListener(place.marker, 'click', () => {
             this.animateMarker(place.marker, 2000);

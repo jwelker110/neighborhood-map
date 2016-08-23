@@ -31,12 +31,11 @@ export class FourSquare {
 
     /**
      * Build the lat,lng param to be used in a url string
-     * @param lat - latitude
-     * @param lng - longitude
      * @returns {string} - url string containing the ll param
+     * @param coords - coordinates to search near
      */
-    latLngParams = (lat: number, lng: number) => {
-        return 'll=' + lat + ',' + lng;
+    latLngParams = (coords: {lat: any, lng: any}) => {
+        return 'll=' + coords.lat + ',' + coords.lng;
     };
 
     queryParams = (query: string) => {
@@ -69,7 +68,7 @@ export class FourSquare {
                 return;
             }
             // let's call our callback meow
-            if(callback) { callback(resp); }
+            if(typeof callback === 'function') { callback(resp); }
         };
 
         xhr.open('GET', url, true);

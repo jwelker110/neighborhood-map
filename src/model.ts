@@ -7,7 +7,7 @@ export class ViewModel {
 
     locations = ko.observableArray([]);
     filteredLocations = ko.observableArray([]);
-    filter = ko.observable('');
+    filter = ko.observable('Food near Baton Rouge');
     searchAction = ko.observable('search');
     map: any;
     isListCollapsed = ko.observable(true);
@@ -50,11 +50,35 @@ export class ViewModel {
             this.setCurrentLocation(this.filteredLocations()[0]);
             return;
         } else if (this.searchAction() == 'search') {
+            // TODO NEED TO REMOVE OLD MARKERS FROM GOOGLE MAP
+            // if the user supplies near param, use it, else use current lat lng position
             let p: any[] = [];
-            p.push(this.fs.nearParams('baton rouge'));
-            p.push(this.fs.queryParams('food'));
+
+            let filterLower = this.filter().toLowerCase();
+            // look for location keywords
+            let keywords = ['near', 'at', 'around', 'by', 'in'];
+            let locale: any = null;
+            for(let i = 0; i < keywords.length; i++) {
+                if(filterLower.indexOf(keywords[i]) > -1) {
+                    locale = filterLower.split(keywords[i]);
+                    break;
+                }
+            }
+            if(locale && locale.length > 1) {  // this means they entered more than just a location
+                p.push(this.fs.nearParams(locale[locale.length - 1]));
+                p.push(this.fs.queryParams(locale[0]));
+            } else {
+                // they didn't use a location keyword so just use current position
+                let center = this.map.gMap.getCenter();
+                p.push(this.fs.latLngParams({
+                    lat: center.lat(),
+                    lng: center.lng()
+                }));
+                p.push(this.fs.queryParams(this.filter()));
+            }
+
             this.fs.venuesSearch(p, this.fsCallback, this.onError);
-            this.expandList();
+            this.filter('');
         }
     };
 
