@@ -65,8 +65,6 @@ export class ViewModel {
    * Submits the current filter criteria to FS as a search query
    */
   searchSubmit = () => {
-    console.log(this.filteredLocations().length);
-    console.log(this.searchAction());
     if (this.filteredLocations().length > 0 && this.searchAction() === 'filter') {
       this.setCurrentLocation(this.filteredLocations()[0]);
     } else if (this.searchAction() == 'search') {
@@ -114,7 +112,6 @@ export class ViewModel {
   };
 
   setCurrentLocation = (place:any) => {
-    console.log(place);
     this.isListCollapsed(true);
     this.map.triggerMarker(place.marker);
   };
