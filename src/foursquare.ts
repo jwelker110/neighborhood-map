@@ -46,6 +46,14 @@ export class FourSquare {
         return 'near=' + locale;
     };
 
+    radiusParams = (radius: number = 3200) => {
+        return 'radius=' + radius;
+    };
+
+    intentParams = (intent: string = 'checkin') => {
+        return 'intent=' + intent;
+    };
+
     /**
      * Perform a venue search with the provided parameters
      * @param params {Array} - parameters to include in the query url
@@ -75,6 +83,37 @@ export class FourSquare {
         xhr.send();
     };
 
+    buildVenuesSearch = (searchString: string, center: {lat: any, lng: any}, callback: any, onError: any) => {
+        // if the user supplies near param, use it, else use current lat lng position
+        let p: any[] = [];
 
+        // look for location keywords
+        let keywords = ['near', 'nearby', 'surrounding', 'at', 'around', 'by', 'in'];
+        let locale:any = null;
+
+        for (let i = 0; i < keywords.length; i++) {
+            if (searchString.indexOf(keywords[i]) > -1) {
+                locale = searchString.split(keywords[i]);
+                break;
+            }
+        }
+
+        if (locale && locale.length > 1) {  // this means they entered more than just a location
+            p.push(this.nearParams(locale[locale.length - 1]));
+            p.push(this.queryParams(locale[0]));
+        } else {
+            // they didn't use a location keyword so just use current position
+            p.push(this.latLngParams({
+                lat: center.lat(),
+                lng: center.lng()
+            }));
+            p.push(this.queryParams(searchString));
+        }
+
+        p.push(this.intentParams());
+        p.push(this.radiusParams());
+
+        this.venuesSearch(p, callback, onError);
+    };
 
 }
