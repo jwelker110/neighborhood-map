@@ -88,7 +88,7 @@ export class FourSquare {
         let p: any[] = [];
 
         // look for location keywords
-        let keywords = ['near', 'nearby', 'surrounding', 'at', 'around', 'by', 'in'];
+        let keywords = [' near ', ' nearby ', ' surrounding ', ' at ', ' around ', ' by ', ' in '];
         let locale:any = null;
 
         for (let i = 0; i < keywords.length; i++) {
