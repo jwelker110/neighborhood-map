@@ -49,8 +49,9 @@ export class ViewModel {
    */
   searchCallback = (resp:any) => {
     // set the locations in the google map and the model
-    this.map.mapVenuesSearchCallback(resp);
-    this.venuesSearchCallback(resp);
+    this.map.setLocations(resp.response.venues);
+    this.setLocations(resp.response.venues);
+    this.setAction('filter');
   };
 
   /**
@@ -64,9 +65,10 @@ export class ViewModel {
    * Submits the current filter criteria to FS as a search query
    */
   searchSubmit = () => {
-    if (this.filteredLocations().length > 0 && this.searchAction() == 'filter') {
+    console.log(this.filteredLocations().length);
+    console.log(this.searchAction());
+    if (this.filteredLocations().length > 0 && this.searchAction() === 'filter') {
       this.setCurrentLocation(this.filteredLocations()[0]);
-      return;
     } else if (this.searchAction() == 'search') {
       this.fs.buildVenuesSearch(this.filter().toLowerCase(), this.map.gMap.getCenter(), this.searchCallback, this.onError);
       this.filter('');
@@ -88,14 +90,6 @@ export class ViewModel {
         this.searchSubmit();
       }
     }
-  };
-
-  /**
-   * @param resp - resp from venues search
-   */
-  venuesSearchCallback = (resp:any) => {
-    this.setLocations(resp.response && resp.response.venues ? resp.response.venues : []);
-    this.setAction('filter');
   };
 
   toggleListCollapsed = () => {
@@ -120,6 +114,7 @@ export class ViewModel {
   };
 
   setCurrentLocation = (place:any) => {
+    console.log(place);
     this.isListCollapsed(true);
     this.map.triggerMarker(place.marker);
   };
@@ -128,7 +123,16 @@ export class ViewModel {
     if (this.searchAction() == 'search') {
       return;
     }
-    this.setLocations(this.map.filterLocations(this.filter()));
+    let filtered = this.locations().filter((location: any): boolean => {
+      let match = location.name.toLowerCase().indexOf(this.filter().toLowerCase()) > -1;
+      if(!match && location.marker) {
+        this.map.hideMarker(location.marker);
+      } else if (!location.marker.map) {
+        this.map.showMarker(location.marker);
+      }
+      return match;
+    });
+    this.setFilteredLocations(filtered);
     this.expandList();
   };
 
