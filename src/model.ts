@@ -5,138 +5,137 @@ import {FourSquare} from "./foursquare";
 
 export class ViewModel {
 
-    locations = ko.observableArray([]);
-    filteredLocations = ko.observableArray([]);
-    filter = ko.observable('Food near Baton Rouge');
-    searchAction = ko.observable('search');
-    map: any;
-    isListCollapsed = ko.observable(true);
-    isCollapsedComputed: KnockoutComputed<any>;
-    listPulldownComputed: KnockoutComputed<any>;
-    loading = ko.observable(true);
-    alerts = ko.observableArray([]);
-    fs: FourSquare;
+  locations = ko.observableArray([]);
+  filteredLocations = ko.observableArray([]);
+  filter = ko.observable('Food near Baton Rouge'); // todo move this to the search call and pass directly the first time?
+  searchAction = ko.observable('search');
+  map: any;
+  isListCollapsed = ko.observable(true);
+  isCollapsedComputed:KnockoutComputed<any>;
+  listPulldownComputed:KnockoutComputed<any>;
+  loading = ko.observable(true);
+  alerts = ko.observableArray([]);
+  fs:FourSquare;
 
-    constructor(map: any){
-        this.map = map;
+  constructor(map:any) {
+    this.map = map;
+    // used when a google marker is clicked so the list will collapse
+    this.map.setMarkerClickedCallback(() => {
+      this.isListCollapsed(true);
+    });
 
-        this.fs = new FourSquare(
-            "XJ5MBAGS2GLP1QAXQJWSAVYPKZLRFQK1XNUEE24FHTD2NG1F",
-            "I5PXU1HOIGN5ASTP04HAQDB3ZNOTKXJD1GX5GIR1CBHGWIW3");
-        this.searchSubmit(null, null);
+    // creating the new FS service
+    this.fs = new FourSquare(
+        "XJ5MBAGS2GLP1QAXQJWSAVYPKZLRFQK1XNUEE24FHTD2NG1F",
+        "I5PXU1HOIGN5ASTP04HAQDB3ZNOTKXJD1GX5GIR1CBHGWIW3");
+    this.searchSubmit();
 
-        this.isCollapsedComputed = ko.pureComputed(() => {
-            return this.isListCollapsed() ? '' : 'list-expanded';
-        }, this);
-        this.listPulldownComputed = ko.pureComputed(() => {
-            if(this.filteredLocations().length == 0) {
-                return 'glyphicon-chevron-down';
-            }
-            return this.isListCollapsed() ? 'glyphicon-chevron-down' : 'glyphicon-chevron-up';
-        });
+    // apply the required class to the list when it should be shown
+    this.isCollapsedComputed = ko.pureComputed(() => {
+      return this.isListCollapsed() ? '' : 'list-expanded';
+    });
+
+    // change the list pulldown chevron to reflect shown/hidden list
+    this.listPulldownComputed = ko.pureComputed(() => {
+      if (this.filteredLocations().length == 0) {
+        return 'glyphicon-chevron-down';
+      }
+      return this.isListCollapsed() ? 'glyphicon-chevron-down' : 'glyphicon-chevron-up';
+    });
+  }
+
+  /**
+   * @param resp
+   */
+  searchCallback = (resp:any) => {
+    // set the locations in the google map and the model
+    this.map.mapVenuesSearchCallback(resp);
+    this.venuesSearchCallback(resp);
+  };
+
+  /**
+   * Displays an error across the map when called
+   */
+  onError = () => {
+    this.addAlert('An error occurred while retrieving venues. Please reload the page and try again.', null);
+  };
+
+  /**
+   * Submits the current filter criteria to FS as a search query
+   */
+  searchSubmit = () => {
+    if (this.filteredLocations().length > 0 && this.searchAction() == 'filter') {
+      this.setCurrentLocation(this.filteredLocations()[0]);
+      return;
+    } else if (this.searchAction() == 'search') {
+      this.fs.buildVenuesSearch(this.filter().toLowerCase(), this.map.gMap.getCenter(), this.searchCallback, this.onError);
+      this.filter('');
     }
+  };
 
-    fsCallback = (resp: any) => {
-        // set the locations in the google map and the model
-        this.map.foursquareCallback(resp, this.foursquareCallback);
-    };
+  /**
+   * Set the current user action
+   * @param action
+   */
+  setAction = (action:string) => {
+    this.searchAction(action);
+    if (this.searchAction() == 'filter') {
+      this.expandList();
+      this.filterLocations();
+    } else if (this.searchAction() == 'search') {
+      this.collapseList();
+      if (this.filter().length > 0) {
+        this.searchSubmit();
+      }
+    }
+  };
 
-    onError = () => {
-        this.addAlert('An error occurred while retrieving venues. Please reload the page and try again.', null);
-    };
+  /**
+   * @param resp - resp from venues search
+   */
+  venuesSearchCallback = (resp:any) => {
+    this.setLocations(resp.response && resp.response.venues ? resp.response.venues : []);
+    this.setAction('filter');
+  };
 
-    searchSubmit = (obj: any, event: any) => {
-        if(this.filteredLocations().length > 0 && this.searchAction() == 'filter') {
-            this.setCurrentLocation(this.filteredLocations()[0]);
-            return;
-        } else if (this.searchAction() == 'search') {
-            // TODO NEED TO REMOVE OLD MARKERS FROM GOOGLE MAP
-            // if the user supplies near param, use it, else use current lat lng position
-            let p: any[] = [];
+  toggleListCollapsed = () => {
+    this.isListCollapsed(!this.isListCollapsed());
+  };
 
-            let filterLower = this.filter().toLowerCase();
-            // look for location keywords
-            let keywords = ['near', 'at', 'around', 'by', 'in'];
-            let locale: any = null;
-            for(let i = 0; i < keywords.length; i++) {
-                if(filterLower.indexOf(keywords[i]) > -1) {
-                    locale = filterLower.split(keywords[i]);
-                    break;
-                }
-            }
-            if(locale && locale.length > 1) {  // this means they entered more than just a location
-                p.push(this.fs.nearParams(locale[locale.length - 1]));
-                p.push(this.fs.queryParams(locale[0]));
-            } else {
-                // they didn't use a location keyword so just use current position
-                let center = this.map.gMap.getCenter();
-                p.push(this.fs.latLngParams({
-                    lat: center.lat(),
-                    lng: center.lng()
-                }));
-                p.push(this.fs.queryParams(this.filter()));
-            }
+  expandList = () => {
+    this.isListCollapsed(false);
+  };
 
-            this.fs.venuesSearch(p, this.fsCallback, this.onError);
-            this.filter('');
-        }
-    };
+  collapseList = () => {
+    this.isListCollapsed(true);
+  };
 
-    setAction = (action: string) => {
-        this.searchAction(action);
-        if(this.searchAction() == 'filter') {
-            this.expandList();
-            this.filterLocations({filter: this.filter}, {})
-        } else if(this.searchAction() == 'search') {
-            this.collapseList();
-        }
-    };
+  setLocations = (locations:any[]) => {
+    this.locations(locations);
+    this.setFilteredLocations(locations);
+  };
 
-    foursquareCallback = (resp: any) => {
-        this.setLocations(resp.response && resp.response.venues ? resp.response.venues : []);
-        this.setAction('filter');
-    };
+  setFilteredLocations = (locations:any[]) => {
+    this.filteredLocations(locations);
+  };
 
-    toggleListCollapsed = () => {
-        this.isListCollapsed(!this.isListCollapsed());
-    };
+  setCurrentLocation = (place:any) => {
+    this.isListCollapsed(true);
+    this.map.triggerMarker(place.marker);
+  };
 
-    expandList = () => {
-        this.isListCollapsed(false);
-    };
+  filterLocations = () => {
+    if (this.searchAction() == 'search') {
+      return;
+    }
+    this.setLocations(this.map.filterLocations(this.filter()));
+    this.expandList();
+  };
 
-    collapseList = () => {
-        this.isListCollapsed(true);
-    };
-
-    setLocations = (locations: any[]) => {
-        this.locations(locations);
-        this.setFilteredLocations(locations);
-    };
-
-    setFilteredLocations = (locations: any[]) => {
-        this.filteredLocations(locations);
-    };
-
-    searchCallback = (results: any[]) => {
-        this.setLocations(results);
-    };
-
-    setCurrentLocation = (place: any) => {
-        this.isListCollapsed(true);
-        this.map.triggerMarker(place.marker);
-    };
-
-    filterLocations = (obj: any, event: any) => {
-        if(this.searchAction() == 'search') {return;}
-        this.setLocations(this.map.filterLocations(obj.filter));
-        this.expandList();
-    };
-
-    addAlert = (msg: string, type: string) => {
-        this.alerts.push({
-            msg: msg,
-            type: type ? type : 'alert-danger'
-        });
-    };
+  addAlert = (msg:string, type:string) => {
+    this.alerts.push({
+      msg: msg,
+      type: type ? type : 'alert-danger'
+    });
+  };
 }
