@@ -13,19 +13,16 @@ class GoogleMap {
     infoWindow: any;
     service: any;
 
-    coords: Coords;
-
     markers: any[] = [];
     locations: any[] = [];
 
-    searchCallback: any;
+    markerClickedCallback: any;
 
     /**
      * Constructor for map object.
      * @param coords - coordinates to center map on
      * @param id - id string of the element that will hold the map
      * @param zoom - "height" above the map
-     * @param locations - locations to add to the map
      */
     constructor(coords: Coords, id: string = 'map', zoom: number = 15){
 
@@ -40,9 +37,8 @@ class GoogleMap {
 
     }
 
-    foursquareCallback = (resp: any, callback: any) => {
-        this.setLocations(resp.response && resp.response.venues ? resp.response.venues : []);
-        if(typeof callback === 'function') { callback(resp); }
+    setMarkerClickedCallback = (fn: any) => {
+        this.markerClickedCallback = fn;
     };
 
     /**
@@ -57,6 +53,14 @@ class GoogleMap {
         }
         this.addMarkersRecursively(locations, locations.length - 1);
         this.locations = locations;
+    };
+
+    hideMarker = (marker: any) => {
+        marker.setMap(null);
+    };
+
+    showMarker = (marker: any) => {
+        marker.setMap(this.gMap);
     };
 
     /**
@@ -88,6 +92,7 @@ class GoogleMap {
 
 
     createStreetView = (lat: number, lng: number, id: string, heading: number = 35, pitch: number = 0) => {
+        return;
         return new google.maps.StreetViewPanorama(
             document.getElementById(id), {
                 position: new Coords(lat, lng),
@@ -104,7 +109,7 @@ class GoogleMap {
      * @param place - the place we want to represent
      * @returns {string} - string containing html formatting
      */
-    getLocationContent(place: any) {
+    getLocationContent = (place: any) => {
         let title = '<h4 class="info-title">' + place.name + '</h4>';
         let streetViewContainer = '<div id="' + 'streetview' + '"></div>';
         let url = place.url ? '<a class="info-website" href="' + place.url + '">On the Web</a>' : '';
@@ -121,7 +126,7 @@ class GoogleMap {
                 streetViewContainer +
             '</div>'
         );
-    }
+    };
 
     /**
      * Getter for locations
@@ -154,6 +159,8 @@ class GoogleMap {
         this.markers.push(place.marker);
         place.marker.setMap(this.gMap);
         google.maps.event.addListener(place.marker, 'click', () => {
+            if(this.markerClickedCallback) { this.markerClickedCallback(); }
+            console.log('clicked');
             this.animateMarker(place.marker, 2000);
             this.infoWindow.setContent(this.getLocationContent(place));
             this.infoWindow.open(this.gMap, place.marker);
@@ -198,18 +205,19 @@ class GoogleMap {
         }, animateTime);
     };
 
-    filterLocations = (filter: KnockoutObservable<string>) => {
-        return this.locations.filter((location: any) => {
-         var match = location.name.toLowerCase().indexOf(filter().toLowerCase()) > -1;
-          if(!match) {  // get it outta here!
-              this.removeMarker(location.marker);
-          }
-          else if(!location.marker.map) {  // jk want you back
-              this.addMarker(location);
-          }
-          return match;
-        });
-    };
+    //filterLocations = (filter: string) => {
+    //    return this.locations.filter((location: any) => {
+    //     var match = location.name.toLowerCase().indexOf(filter) > -1;
+    //      if(!match) {  // get it outta here!
+    //          this.removeMarker(location.marker);
+    //      } else if(location.marker.map == null) {  // jk want you back
+    //          console.log(location.marker);
+    //          console.log('filtered got an event listener');
+    //          this.addMarker(location);
+    //      }
+    //      return match;
+    //    });
+    //};
 
 }
 
