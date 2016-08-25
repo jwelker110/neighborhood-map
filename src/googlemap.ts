@@ -92,7 +92,6 @@ class GoogleMap {
 
 
     createStreetView = (lat: number, lng: number, id: string, heading: number = 35, pitch: number = 0) => {
-        return;
         return new google.maps.StreetViewPanorama(
             document.getElementById(id), {
                 position: new Coords(lat, lng),
@@ -160,7 +159,6 @@ class GoogleMap {
         place.marker.setMap(this.gMap);
         google.maps.event.addListener(place.marker, 'click', () => {
             if(this.markerClickedCallback) { this.markerClickedCallback(); }
-            console.log('clicked');
             this.animateMarker(place.marker, 2000);
             this.infoWindow.setContent(this.getLocationContent(place));
             this.infoWindow.open(this.gMap, place.marker);
@@ -204,20 +202,6 @@ class GoogleMap {
             marker.setAnimation(null);
         }, animateTime);
     };
-
-    //filterLocations = (filter: string) => {
-    //    return this.locations.filter((location: any) => {
-    //     var match = location.name.toLowerCase().indexOf(filter) > -1;
-    //      if(!match) {  // get it outta here!
-    //          this.removeMarker(location.marker);
-    //      } else if(location.marker.map == null) {  // jk want you back
-    //          console.log(location.marker);
-    //          console.log('filtered got an event listener');
-    //          this.addMarker(location);
-    //      }
-    //      return match;
-    //    });
-    //};
 
 }
 
