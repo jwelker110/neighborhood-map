@@ -72,7 +72,7 @@ export class FourSquare {
             if(xhr.readyState !== XMLHttpRequest.DONE) { return; }
             var resp = JSON.parse(xhr.responseText ? xhr.responseText : "{}");
             if(!resp.meta || resp.meta.code != 200) {  // something went wrong querying the API
-                if(onError) { onError(); }
+                if(onError) { onError('An error occurred when retrieving venues. Please reload the page or try another search.', 'danger'); }
                 return;
             }
             // let's call our callback meow
