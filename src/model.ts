@@ -48,6 +48,7 @@ export class ViewModel {
    * @param resp
    */
   searchCallback = (resp:any) => {
+    this.onSuccess();
     // set the locations in the google map and the model
     this.map.setLocations(resp.response.venues);
     this.setLocations(resp.response.venues);
@@ -57,8 +58,15 @@ export class ViewModel {
   /**
    * Displays an error across the map when called
    */
-  onError = () => {
-    this.addAlert('An error occurred while retrieving venues. Please reload the page and try again.', null);
+  onError = (msg: string, type: string) => {
+    this.addAlert(msg, type);
+  };
+
+  /**
+   * Remove the errors
+   */
+  onSuccess = () => {
+    this.alerts([]);
   };
 
   /**
@@ -137,7 +145,7 @@ export class ViewModel {
   addAlert = (msg:string, type:string) => {
     this.alerts.push({
       msg: msg,
-      type: type ? type : 'alert-danger'
+      type: type ? 'alert-' + type : 'alert-danger'
     });
   };
 }
