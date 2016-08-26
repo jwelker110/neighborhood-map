@@ -20,15 +20,19 @@
             <input id="list-filter-input"
                    data-bind="textInput: filter, event: {input: filterLocations}"
                    type="text"
+                   tabindex="1"
+                   autofocus
                    autocomplete="off"
-                   placeholder="Filter or search (e.g. food near Baton Rouge)">
+                   placeholder="Filter or FourSquare search (e.g. food near Baton Rouge)">
         </form>
     </div>
     <div id="list-filter-controls">
         <div class="btn-group list-control-group">
             <button class="btn btn-default list-control"
+                    tabindex="2"
                     data-bind="click: setAction.bind($data, 'filter'), css: {selected: searchAction() == 'filter'}">Filter</button>
             <button class="btn btn-default list-control"
+                    tabindex="3"
                     data-bind="click: setAction.bind($data, 'search'), css: {selected: searchAction() == 'search'}">Search</button>
         </div>
     </div>
@@ -36,7 +40,7 @@
         <div id="list-places" data-bind="foreach: filteredLocations().sort(function(a, b) {return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0;})">
             <div class="list-place" data-bind="click: $parent.setCurrentLocation">
                 <h4><span class="list-place-name" data-bind="text: name"></span> <small class="list-place-category" data-bind="text: categories && categories.length > 0 ? categories[0].shortName : ''"></small></h4>
-                <div data-bind="text: (hereNow && hereNow.summary ? hereNow.summary : 'Here now unavailable') + ' right now'"></div>
+                <!--<div data-bind="text: (hereNow && hereNow.summary ? hereNow.summary : 'Here now unavailable') + ' right now'"></div>-->
                 <div data-bind="text: 'Total checkins: ' + (stats && stats.checkinsCount != undefined ? stats.checkinsCount : 'Unavailable')"></div>
             </div>
         </div>
