@@ -16,6 +16,12 @@ class GoogleMap {
     markers: any[] = [];
     locations: any[] = [];
 
+    largestLat: number;
+    largestLng: number;
+
+    smallestLat: number;
+    smallestLng: number;
+
     markerClickedCallback: any;
 
     /**
@@ -25,7 +31,6 @@ class GoogleMap {
      * @param zoom - "height" above the map
      */
     constructor(coords: Coords, id: string = 'map', zoom: number = 15){
-
         this.gMap = new google.maps.Map(document.getElementById(id), {
             center: coords,
             zoom: zoom,
@@ -47,10 +52,28 @@ class GoogleMap {
     setLocations = (locations: any[]) => {
         this.removeAllMarkers();
         this.deleteAllMarkers();
+        if(locations.length < 1) { return; }
+        // set the initial lat/lng coords
+        this.largestLat = this.smallestLat = locations[0].location.lat;
+        this.largestLng = this.smallestLng = locations[0].location.lng;
+
         for(let i = 0, l=locations.length; i < l; i++) {
+            let loc = locations[i];
+            // calculate lat/lng coords
+            if(loc.location.lat > this.largestLat) {this.largestLat = loc.location.lat;}
+            if(loc.location.lat < this.smallestLat) {this.smallestLat = loc.location.lat;}
+            if(loc.location.lng > this.largestLng) {this.largestLng = loc.location.lng;}
+            if(loc.location.lng < this.smallestLng) {this.smallestLng = loc.location.lng;}
+
             // create the location on the map
-            locations[i].marker = this.createMarker(locations[i].location.lat, locations[i].location.lng);
+            loc.marker = this.createMarker(loc.location.lat, loc.location.lng);
         }
+        // pan to lat/lng center of all markers
+        this.gMap.panTo({
+            lat: this.smallestLat + ((this.largestLat - this.smallestLat) / 2),
+            lng: this.smallestLng + ((this.largestLng - this.smallestLng) / 2)
+        });
+        // display the markers on the map
         this.addMarkersRecursively(locations, locations.length - 1);
         this.locations = locations;
     };
@@ -70,7 +93,6 @@ class GoogleMap {
      */
     addMarkersRecursively = (locations: any[], index: number) => {
         if(index < 0) {
-            google.maps.event.trigger(map, 'resize');
             return;
         }
         setTimeout(() => {
@@ -88,8 +110,6 @@ class GoogleMap {
     deleteAllMarkers = () => {
         this.markers = [];
     };
-
-
 
     createStreetView = (lat: number, lng: number, id: string, heading: number = 35, pitch: number = 0) => {
         return new google.maps.StreetViewPanorama(
@@ -119,10 +139,15 @@ class GoogleMap {
         let hereNowSummary = place.hereNow ? place.hereNow.summary ? place.hereNow.summary : 'Unknown visitors' : 'Visitors unavailable';
         let hereNow = '<div class="info-checkins">' + hereNowSummary + ' right now.</div>';
 
+        let verifiedText = 'The owner<strong>' + (place.verified ? ' has ' : ' has not ') + '</strong>verified this location';
+        let verified = '<div class="info-verified">' + verifiedText + '</div>';
+
         return (
             '<div class="info">' +
                 title +
-                streetViewContainer +
+                checkins +
+                hereNow +
+                verified +
             '</div>'
         );
     };
@@ -162,13 +187,13 @@ class GoogleMap {
             this.animateMarker(place.marker, 2000);
             this.infoWindow.setContent(this.getLocationContent(place));
             this.infoWindow.open(this.gMap, place.marker);
-            this.gMap.setStreetView(
-                this.createStreetView(
-                    place.marker.position.lat(),
-                    place.marker.position.lng(),
-                    'streetview'
-                )
-            );
+            //this.gMap.setStreetView(
+            //    this.createStreetView(
+            //        place.marker.position.lat(),
+            //        place.marker.position.lng(),
+            //        'streetview'
+            //    )
+            //);
             this.gMap.panTo(place.marker.getPosition());
             this.gMap.panBy(0, -200);
         });
