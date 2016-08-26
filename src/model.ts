@@ -21,7 +21,7 @@ export class ViewModel {
     this.map = map;
     // used when a google marker is clicked so the list will collapse
     this.map.setMarkerClickedCallback(() => {
-      this.isListCollapsed(true);
+      this.collapseList();
     });
 
     // creating the new FS service
@@ -70,6 +70,7 @@ export class ViewModel {
     } else if (this.searchAction() == 'search') {
       this.fs.buildVenuesSearch(this.filter().toLowerCase(), this.map.gMap.getCenter(), this.searchCallback, this.onError);
       this.filter('');
+      document.getElementById('list-filter-input').focus();
     }
   };
 
@@ -112,7 +113,7 @@ export class ViewModel {
   };
 
   setCurrentLocation = (place:any) => {
-    this.isListCollapsed(true);
+    this.collapseList();
     this.map.triggerMarker(place.marker);
   };
 
