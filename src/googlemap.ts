@@ -119,7 +119,8 @@ class GoogleMap {
                 pov: {
                     heading: heading,
                     pitch: pitch
-                }
+                },
+                disableDefaultUI: true
             }
         );
     };
