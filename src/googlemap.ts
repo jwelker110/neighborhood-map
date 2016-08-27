@@ -53,6 +53,7 @@ class GoogleMap {
         this.removeAllMarkers();
         this.deleteAllMarkers();
         if(locations.length < 1) { return; }
+
         // set the initial lat/lng coords
         this.largestLat = this.smallestLat = locations[0].location.lat;
         this.largestLng = this.smallestLng = locations[0].location.lng;
@@ -134,20 +135,17 @@ class GoogleMap {
         let url = place.url ? '<a class="info-website" href="' + place.url + '">On the Web</a>' : '';
 
         let checkinsCount = place.stats ? place.stats.checkinsCount ? place.stats.checkinsCount : 'Unknown' : 'Unavailable';
-        let checkins = '<div class="info-checkins">Total check-ins: <strong>' + checkinsCount + '</strong></div>';
+        let checkins = '<div class="info-checkins">Check-ins: <strong>' + checkinsCount + '</strong></div>';
 
         let hereNowSummary = place.hereNow ? place.hereNow.summary ? place.hereNow.summary : 'Unknown visitors' : 'Visitors unavailable';
         let hereNow = '<div class="info-checkins">' + hereNowSummary + ' right now.</div>';
-
-        let verifiedText = 'The owner<strong>' + (place.verified ? ' has ' : ' has not ') + '</strong>verified this location';
-        let verified = '<div class="info-verified">' + verifiedText + '</div>';
 
         return (
             '<div class="info">' +
                 title +
                 checkins +
                 hereNow +
-                verified +
+                streetViewContainer +
             '</div>'
         );
     };
@@ -187,13 +185,13 @@ class GoogleMap {
             this.animateMarker(place.marker, 2000);
             this.infoWindow.setContent(this.getLocationContent(place));
             this.infoWindow.open(this.gMap, place.marker);
-            //this.gMap.setStreetView(
-            //    this.createStreetView(
-            //        place.marker.position.lat(),
-            //        place.marker.position.lng(),
-            //        'streetview'
-            //    )
-            //);
+            this.gMap.setStreetView(
+                this.createStreetView(
+                    place.marker.position.lat(),
+                    place.marker.position.lng(),
+                    'streetview'
+                )
+            );
             this.gMap.panTo(place.marker.getPosition());
             this.gMap.panBy(0, -200);
         });
