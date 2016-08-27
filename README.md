@@ -9,10 +9,10 @@ queried from a 3rd party API.
 
 ### Frameworks/technologies used
 - [Bootstrap CSS](http://getbootstrap.com/)
-- [Knockoutjs](https://knockoutjs.com/) - for Bootstrap
+- [Knockoutjs](https://knockoutjs.com/)
 - [Google Map API](https://developers.google.com/maps/)
-- [Flask](http://flask.pocoo.org) - Backend server that queries [Factual API](https://github.com/Factual/factual-python-driver)
-- [Factual](https://www.factual.com/solutions/developers) - Service providing place information
+- [Google Street View API](https://developers.google.com/streetview/)
+- [FourSquare API](https://developer.foursquare.com/)
 
 ### Project specifications - Per Udacity's project requirements
 
@@ -65,21 +65,14 @@ the [Udacity JavaScript Style Guide](http://udacity.github.io/frontend-nanodegre
 
 1. [Clone](https://github.com/jwelker110/neighborhood-map.git) this repo.
 2. [Install](http://blog.npmjs.org/post/85484771375/how-to-install-npm) npm.
-3. [Install](https://www.npmjs.com/package/typescript) the TypeScript Compiler.
-4. `cd` into the project's folder.
-5. `tsc` to compile the files. They will be placed in the `built` folder.
-6. `python -m SimpleHTTPServer 8080`.
-7. You should be able to access the map in a web browser by typing in `localhost:8080`.
-8. Assuming you want to query [Factual's](https://www.factual.com/solutions/developers) API from the application 
-(Which you should), you need to [clone](https://github.com/jwelker110/neighborhood-map-backend) the backend repo, `cd` into the directory, and place your app key and secret in the `keys_example.json` file.
-9. type `mv keys_example.json secret_keys.json`
-10. [Install](https://pip.pypa.io/en/stable/installing/) pip if you don't already have it.
-11. `pip install virtualenv`
-12. `virtualenv mapenv`
-13. `source mapenv/bin/activate`
-14. `pip install -r requirements.txt`
-15. `python app.py` - Now you should have a webserver serving at localhost:8081
+3. [Install]() http-server.
+4. [Install](https://www.npmjs.com/package/typescript) the TypeScript Compiler.
+5. `cd` into the project's folder.
+6. `tsc` to compile the files. They will be placed in the `built` folder.
+7. `http-server` will start http-server, serving index.html from the project root.
+8. You will be able to access the map in a web browser by typing in `localhost:8080`.
 
-### Setting up your computer
+### Using the app
 
-1. [Install Python](https://www.python.org/downloads/) if necessary.
+1. Entering only a search term will search in a radius from the center of the current view.
+2. To search near a specific location, enter `_searchTerm_ near _locationName_`
