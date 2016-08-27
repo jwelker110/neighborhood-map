@@ -17,8 +17,23 @@ ul {
 }
 
 #streetview {
+  border: solid 2px #4285f4;
   height: 200px;
   min-width: 320px;
+}
+
+#attribution-foursquare {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 15px;
+  text-align: center;
+}
+
+#attribution-foursquare-img {
+  height: 30px;
+  max-width: 100%;
+
 }
 
 .alert-container {
@@ -81,7 +96,10 @@ ul {
 /* Controls End */
 
 #list-filter-container {
-  border: solid 1px #ccc;
+  border-top: solid 1px #ccc;
+  border-right: solid 1px #ccc;
+  border-bottom: none;
+  border-left: solid 1px #ccc;
 }
 
 #list-filter-input {
@@ -134,6 +152,7 @@ ul {
 .list-place-name {
   display: inline-block;
   max-width: 60%;
+  font-weight: normal;
 }
 
 .list-place-category {
@@ -141,6 +160,10 @@ ul {
   max-width: 40%;
   float: right;
   margin-right: 10px;
+}
+
+.list-place-verified {
+  font-size: .9em;
 }
 
 /* List End */
@@ -188,6 +211,11 @@ ul {
   padding: 0 5px;
 }
 
+.info-checkins {
+  width: 50%;
+  float: left;
+}
+
 .gm-style-iw {
   text-align: center;
 }
@@ -205,6 +233,10 @@ ul {
  */
 .gm-iv-address {
   display: none !important;
+}
+
+.widget-scene-canvas {
+  width: 100% !important;
 }
 
 @media screen and (max-height: 675px) {
