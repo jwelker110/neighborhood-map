@@ -75,4 +75,4 @@ the [Udacity JavaScript Style Guide](http://udacity.github.io/frontend-nanodegre
 ### Using the app
 
 1. Entering only a search term will search in a radius from the center of the current view.
-2. To search near a specific location, enter `_searchTerm_ near _locationName_`
+2. To search near a specific location, enter `searchTerm near locationName`
