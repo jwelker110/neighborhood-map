@@ -22,6 +22,10 @@ ul {
   min-width: 320px;
 }
 
+#streetview .gm-style-cc {
+  display: none !important;
+}
+
 #attribution-foursquare {
   position: absolute;
   left: 0;
@@ -252,6 +256,6 @@ ul {
 
 @media screen and (max-width: 480px) {
   .info {
-    max-width: 290px;
+    max-width: 230px;
   }
 }
