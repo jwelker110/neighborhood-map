@@ -18,12 +18,11 @@
     <div id="list-filter-container">
         <form data-bind="event: {submit: searchSubmit}">
             <input id="list-filter-input"
-                   data-bind="textInput: filter, event: {input: filterLocations}"
+                   data-bind="textInput: filter, event: {input: filterLocations}, attr: {placeholder: searchAction() == 'filter' ? 'Filter results...' : 'Search e.g. Food near Baton Rouge...'}"
                    type="text"
                    tabindex="1"
                    autofocus
-                   autocomplete="off"
-                   placeholder="Filter or FourSquare search (e.g. food near Baton Rouge)">
+                   autocomplete="off">
         </form>
     </div>
     <div id="list-filter-controls">
@@ -40,8 +39,7 @@
         <div id="list-places" data-bind="foreach: filteredLocations().sort(function(a, b) {return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0;})">
             <div class="list-place" data-bind="click: $parent.setCurrentLocation">
                 <h4><span class="list-place-name" data-bind="text: name"></span> <small class="list-place-category" data-bind="text: categories && categories.length > 0 ? categories[0].shortName : ''"></small></h4>
-                <!--<div data-bind="text: (hereNow && hereNow.summary ? hereNow.summary : 'Here now unavailable') + ' right now'"></div>-->
-                <div data-bind="text: 'Total checkins: ' + (stats && stats.checkinsCount != undefined ? stats.checkinsCount : 'Unavailable')"></div>
+                <div class="list-place-verified">This location<strong data-bind="text: verified ? ' has ' : ' has not '"></strong>been verified</div>
             </div>
         </div>
     </div>
@@ -50,6 +48,7 @@
         <div class="list-pulldown-border"></div>
     </div>
 </div>
+<div id="attribution-foursquare"><img id="attribution-foursquare-img" src="static/img/Powered-by-Foursquare-black-300.png"></div>
 </body>
 <footer>
     <script src="built/init.js"></script>
