@@ -11,6 +11,10 @@ ul {
   list-style-type: none;
 }
 
+a:hover {
+  text-decoration: none !important;
+}
+
 #map {
   height: 100vh;
   width: 100vw;
@@ -143,31 +147,32 @@ ul {
 .list-place {
   padding: 2px;
   font-size: 1em;
-  border-bottom: solid 1px #ccc;
+  /*border-bottom: solid 1px #ccc;*/
 }
 
 .list-place:hover {
   cursor: pointer;
   background-color: rgba(66, 133, 244, 0.25);
-  color: #4285f4 !important;
   outline: solid 1px #4285f4;
 }
 
 .list-place-name {
+  color: #4285f4;
   display: inline-block;
   max-width: 60%;
   font-weight: normal;
+  line-height: 20px;
 }
 
-.list-place-category {
-  display: inline-block;
-  max-width: 40%;
+.list-place-price {
   float: right;
-  margin-right: 10px;
+  line-height: 20px;
+  font-size: 70% !important;
 }
 
-.list-place-verified {
-  font-size: .9em;
+.list-place-address,
+.list-place-hours {
+  font-size: .8em;
 }
 
 /* List End */
@@ -212,12 +217,30 @@ ul {
 }
 
 .info-title {
+  color: #4285f4;
   padding: 0 5px;
 }
 
-.info-checkins {
-  width: 50%;
-  float: left;
+.info-rating,
+.info-review {
+  font-size: .9em;
+  font-weight: bold;
+}
+
+.info-address {
+  font-size: .9em;
+}
+
+.info-address > p {
+  margin-bottom: 0;
+}
+
+.info-see-more {
+  margin-top: 5px;
+}
+
+.info-see-more > a {
+  color: #4285f4;
 }
 
 .gm-style-iw {
