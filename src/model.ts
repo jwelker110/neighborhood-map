@@ -1,5 +1,4 @@
 import * as ko from "knockout";
-import * as fs from "foursquare";
 import {FourSquare} from "./foursquare";
 "use strict";
 
@@ -7,7 +6,7 @@ export class ViewModel {
 
   locations = ko.observableArray([]);
   filteredLocations = ko.observableArray([]);
-  filter = ko.observable('Food near Baton Rouge'); // todo move this to the search call and pass directly the first time?
+  filter = ko.observable('Food near Baton Rouge');
   searchAction = ko.observable('search');
   map: any;
   isListCollapsed = ko.observable(true);
