@@ -18,39 +18,63 @@ export class FourSquare {
     }
 
     /**
-     * Build the auth params to be used in a future search
-     * @returns {string} - url string containing client id and secret params
+     * Build the auth params
+     * @returns - url string containing client id and secret params
      */
-    secretParams = () => {
+    secretParams = (): string => {
         return '&client_id=' + this.clientId + '&client_secret=' + this.clientSecret;
     };
 
-    versionMethodParams = () => {
+    /**
+     * Build the version and method params
+     * @returns - url string containing method and version info
+     */
+    versionMethodParams = (): string => {
         return '&v=' + this.version + '&m=' + this.method;
     };
 
     /**
-     * Build the lat,lng param to be used in a url string
-     * @returns {string} - url string containing the ll param
+     * Build the lat,lng param
      * @param coords - coordinates to search near
+     * @returns - url string containing the ll param
      */
-    latLngParams = (coords: {lat: any, lng: any}) => {
+    latLngParams = (coords: {lat: any, lng: any}): string => {
         return 'll=' + coords.lat + ',' + coords.lng;
     };
 
-    queryParams = (query: string) => {
+    /**
+     * Build the query param
+     * @param query - the search term(s)
+     * @returns - url string containing the query param
+     */
+    queryParams = (query: string): string => {
         return 'query=' + query;
     };
 
-    nearParams = (locale: string) => {
+    /**
+     * Build the "near" query param
+     * @param locale - the location to query
+     * @returns - url string containing the near param
+     */
+    nearParams = (locale: string): string => {
         return 'near=' + locale;
     };
 
-    radiusParams = (radius: number = 3200) => {
+    /**
+     * Build the radius param
+     * @param radius - the radius, in meters, to include search results
+     * @returns - url string containing the radius param
+     */
+    radiusParams = (radius: number = 3200): string => {
         return 'radius=' + radius;
     };
 
-    intentParams = (intent: string = 'checkin') => {
+    /**
+     * Build the intent param
+     * @param intent - the FS intent, defaults to 'checkin'
+     * @returns - url string containing the intent param
+     */
+    intentParams = (intent: string = 'checkin'): string => {
         return 'intent=' + intent;
     };
 
@@ -69,28 +93,40 @@ export class FourSquare {
         var xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = () => {
-            if(xhr.readyState !== XMLHttpRequest.DONE) { return; }
+            if (xhr.readyState !== XMLHttpRequest.DONE) {
+                return;
+            }
             var resp = JSON.parse(xhr.responseText ? xhr.responseText : "{}");
-            if(!resp.meta || resp.meta.code != 200) {  // something went wrong querying the API
-                if(onError) { onError('An error occurred when retrieving venues. Please reload the page or try another search.', 'danger'); }
+            if (!resp.meta || resp.meta.code != 200) {  // something went wrong querying the API
+                if (onError) {
+                    onError('An error occurred when retrieving venues. Please reload the page or try another search.', 'danger');
+                }
                 return;
             }
             // let's call our callback meow
-            if(typeof callback === 'function') { callback(resp); }
+            if (typeof callback === 'function') {
+                callback(resp);
+            }
         };
 
         xhr.open('GET', url, true);
         xhr.send();
     };
 
+    /**
+     * Interpret the user input to build a FS query string
+     * @param searchString - the user-supplied search
+     * @param center - the coords to search around
+     * @param callback - the function to call after the search has completed
+     * @param onError - the function to call after the search has failed
+     */
     buildVenuesSearch = (searchString: string, center: {lat: any, lng: any}, callback: any, onError: any) => {
-        // if the user supplies near param, use it, else use current lat lng position
-        let p: any[] = [];
+        let params: any[] = [];
 
-        // look for location keywords
         let keywords = [' near ', ' nearby ', ' surrounding ', ' at ', ' around ', ' by ', ' in '];
-        let locale:any = null;
+        let locale: any = null;
 
+        // check for location keywords
         for (let i = 0; i < keywords.length; i++) {
             if (searchString.indexOf(keywords[i]) > -1) {
                 locale = searchString.split(keywords[i]);
@@ -99,21 +135,21 @@ export class FourSquare {
         }
 
         if (locale && locale.length > 1) {  // this means they entered more than just a location
-            p.push(this.nearParams(locale[locale.length - 1]));
-            p.push(this.queryParams(locale[0]));
+            params.push(this.nearParams(locale[locale.length - 1]));
+            params.push(this.queryParams(locale[0]));
         } else {
             // they didn't use a location keyword so just use current position
-            p.push(this.latLngParams({
+            params.push(this.latLngParams({
                 lat: center.lat(),
                 lng: center.lng()
             }));
-            p.push(this.queryParams(searchString));
+            params.push(this.queryParams(searchString));
         }
 
-        p.push(this.intentParams());
-        p.push(this.radiusParams());
+        params.push(this.intentParams());
+        params.push(this.radiusParams());
 
-        this.venuesSearch(p, callback, onError);
+        this.venuesSearch(params, callback, onError);
     };
 
 }

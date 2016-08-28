@@ -30,10 +30,14 @@
         <div class="btn-group list-control-group">
             <button class="btn btn-default list-control"
                     tabindex="2"
-                    data-bind="click: setAction.bind($data, 'filter'), css: {selected: searchAction() == 'filter'}">Filter</button>
+                    data-bind="click: setAction.bind($data, 'filter'), css: {selected: searchAction() == 'filter'}">
+                Filter
+            </button>
             <button class="btn btn-default list-control"
                     tabindex="3"
-                    data-bind="click: setAction.bind($data, 'search'), css: {selected: searchAction() == 'search'}">Search</button>
+                    data-bind="click: setAction.bind($data, 'search'), css: {selected: searchAction() == 'search'}">
+                Search
+            </button>
         </div>
     </div>
     <div id="list-container" data-bind="css: isCollapsedComputed">
@@ -45,10 +49,13 @@
                 <div class="list-place-details">
                     <h4>
                         <span class="list-place-name" data-bind="text: venue.name"></span>
-                        <small class="list-place-price" data-bind="text: venue.price && venue.price.message ? venue.price.message + ' prices' : 'Prices unavailable'"></small>
+                        <small class="list-place-price"
+                               data-bind="text: venue.price && venue.price.message ? venue.price.message + ' prices' : 'Prices unavailable'"></small>
                     </h4>
-                    <div class="list-place-address" data-bind="text: venue.location ? venue.location.formattedAddress[0] : 'Address unavailable'"></div>
-                    <div class="list-place-hours" data-bind="text: venue.hours && venue.hours.status ? venue.hours.status : 'Hours unavailable'"></div>
+                    <div class="list-place-address"
+                         data-bind="text: venue.location ? venue.location.formattedAddress[0] : 'Address unavailable'"></div>
+                    <div class="list-place-hours"
+                         data-bind="text: venue.hours && venue.hours.status ? venue.hours.status : 'Hours unavailable'"></div>
                 </div>
             </div>
         </div>
@@ -58,13 +65,16 @@
         <div class="list-pulldown-border"></div>
     </div>
 </div>
-<div id="attribution-foursquare"><a href="https://developer.foursquare.com/"><img id="attribution-foursquare-img" src="/static/img/Powered-by-Foursquare-black-300.png"></a></div>
+<div id="attribution-foursquare"><a href="https://developer.foursquare.com/"><img id="attribution-foursquare-img"
+                                                                                  src="/static/img/Powered-by-Foursquare-black-300.png"></a>
+</div>
 </body>
 <footer>
     <script src="init.js"></script>
     <script src="googlemap.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZJz-OC0HG2ogLZ1uP_51QJiKkHh2ap0g&callback=initMap&libraries=places"
-    type="text/javascript"></script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZJz-OC0HG2ogLZ1uP_51QJiKkHh2ap0g&callback=initMap&libraries=places"
+            type="text/javascript"></script>
     <script data-main="/main.js" src="/externals/require.js"></script>
     <script src="require-config.js"></script>
 </footer>

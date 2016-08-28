@@ -1,209 +1,209 @@
 h1, h2, h3, h4, h5 {
-  margin-top: 3px;
-  margin-bottom: 3px;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 h4 {
-  font-size: 1.3em;
+    font-size: 1.3em;
 }
 
 ul {
-  list-style-type: none;
+    list-style-type: none;
 }
 
 a:hover {
-  text-decoration: none !important;
+    text-decoration: none !important;
 }
 
 #map {
-  height: 100vh;
-  width: 100vw;
+    height: 100vh;
+    width: 100vw;
 }
 
 #streetview {
-  border: solid 2px #4285f4;
-  height: 200px;
-  min-width: 320px;
+    border: solid 2px #4285f4;
+    height: 200px;
+    min-width: 320px;
 }
 
 #streetview .gm-style-cc {
-  display: none !important;
+    display: none !important;
 }
 
 #attribution-foursquare {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 15px;
-  text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 15px;
+    text-align: center;
 }
 
 #attribution-foursquare-img {
-  height: 30px;
-  max-width: 100%;
+    height: 30px;
+    max-width: 100%;
 
 }
 
 .alert-container {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
 }
 
 .alert {
-  text-align: center;
+    text-align: center;
 }
 
 /**
  * NEW LIST CSS
  */
 #places-container {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  max-width: 480px;
-  padding: 5px;
-  max-height: calc(100vh - 50px);
-  overflow-y: auto;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    max-width: 480px;
+    padding: 5px;
+    max-height: calc(100vh - 50px);
+    overflow-y: auto;
 }
 
 /* Container End */
 
 #list-filter-controls {
-  background-color: #fff;
-  border: solid 1px #ccc;
-  margin: 0 auto;
+    background-color: #fff;
+    border: solid 1px #ccc;
+    margin: 0 auto;
 }
 
 .list-control-group {
-  width: 100%;
+    width: 100%;
 }
 
 .list-control {
-  color: #4285f4;
-  width: 50%;
-  border: none;
-  border-radius: 0px;
-  margin: 0 auto !important;
+    color: #4285f4;
+    width: 50%;
+    border: none;
+    border-radius: 0px;
+    margin: 0 auto !important;
 }
 
 .selected {
-  background-color: #efefef;
-  box-shadow: inset 0px 1px 1px 1px #4285f4;
+    background-color: #efefef;
+    box-shadow: inset 0px 1px 1px 1px #4285f4;
 }
 
 .btn:focus,
 .btn:active,
 .btn:active:focus {
-  border: none;
-  outline: none;
+    border: none;
+    outline: none;
 }
 
 /* Controls End */
 
 #list-filter-container {
-  border-top: solid 1px #ccc;
-  border-right: solid 1px #ccc;
-  border-bottom: none;
-  border-left: solid 1px #ccc;
+    border-top: solid 1px #ccc;
+    border-right: solid 1px #ccc;
+    border-bottom: none;
+    border-left: solid 1px #ccc;
 }
 
 #list-filter-input {
-  width: 100%;
-  padding: 0 5px;
-  height: 32px;
-  border-radius: 0px;
-  border: none;
-  font-variant: small-caps;
+    width: 100%;
+    padding: 0 5px;
+    height: 32px;
+    border-radius: 0px;
+    border: none;
+    font-variant: small-caps;
 }
 
 #list-filter-input:focus {
-  outline: none;
+    outline: none;
 }
 
 /* Filter End */
 
 #list-container {
-  max-height: 0px;
-  margin-top: -1px;
-  overflow-y: auto;
-  border: none;
-  transition: max-height .5s linear;
+    max-height: 0px;
+    margin-top: -1px;
+    overflow-y: auto;
+    border: none;
+    transition: max-height .5s linear;
 }
 
 .list-expanded {
-  max-height: calc(100vh - 158px) !important;
-  border: solid 1px #ccc !important;
+    max-height: calc(100vh - 158px) !important;
+    border: solid 1px #ccc !important;
 }
 
 #list-places {
-  max-width: 480px;
-  max-height: 1000%;
-  background-color: #fff;
+    max-width: 480px;
+    max-height: 1000%;
+    background-color: #fff;
 }
 
 .list-place {
-  padding: 2px;
-  font-size: 1em;
-  /*border-bottom: solid 1px #ccc;*/
+    padding: 2px;
+    font-size: 1em;
+    /*border-bottom: solid 1px #ccc;*/
 }
 
 .list-place:hover {
-  cursor: pointer;
-  background-color: rgba(66, 133, 244, 0.25);
-  outline: solid 1px #4285f4;
+    cursor: pointer;
+    background-color: rgba(66, 133, 244, 0.25);
+    outline: solid 1px #4285f4;
 }
 
 .list-place-name {
-  color: #4285f4;
-  display: inline-block;
-  max-width: 60%;
-  font-weight: normal;
-  line-height: 20px;
+    color: #4285f4;
+    display: inline-block;
+    max-width: 60%;
+    font-weight: normal;
+    line-height: 20px;
 }
 
 .list-place-price {
-  float: right;
-  line-height: 20px;
-  font-size: 70% !important;
+    float: right;
+    line-height: 20px;
+    font-size: 70% !important;
 }
 
 .list-place-address,
 .list-place-hours {
-  font-size: .8em;
+    font-size: .8em;
 }
 
 /* List End */
 .list-pulldown-container {
-  display: block;
-  margin: 1px auto 0px;
-  width: 80px;
+    display: block;
+    margin: 1px auto 0px;
+    width: 80px;
 }
 
 .list-pulldown-container:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .list-pulldown {
-  height: 0px;
-  color: #333;
-  line-height: 30px;
-  text-align: center;
+    height: 0px;
+    color: #333;
+    line-height: 30px;
+    text-align: center;
 }
 
 .list-pulldown-border {
-  width: 80px;
-  display: block;
-  margin: -1px auto;
-  border-top: solid 30px #4285f4;
-  border-left: solid 10px transparent;
-  border-right: solid 10px transparent;
+    width: 80px;
+    display: block;
+    margin: -1px auto;
+    border-top: solid 30px #4285f4;
+    border-left: solid 10px transparent;
+    border-right: solid 10px transparent;
 }
 
 .glyphicon {
-  color: #fff;
+    color: #fff;
 }
 
 /**
@@ -211,74 +211,74 @@ a:hover {
  */
 
 .info {
-  text-align: center;
-  overflow-y: auto;
-  max-height: 340px;
+    text-align: center;
+    overflow-y: auto;
+    max-height: 340px;
 }
 
 .info-title {
-  color: #4285f4;
-  padding: 0 5px;
+    color: #4285f4;
+    padding: 0 5px;
 }
 
 .info-rating,
 .info-review {
-  font-size: .9em;
-  font-weight: bold;
+    font-size: .9em;
+    font-weight: bold;
 }
 
 .info-address {
-  font-size: .9em;
+    font-size: .9em;
 }
 
 .info-address > p {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .info-see-more {
-  margin-top: 5px;
+    margin-top: 5px;
 }
 
 .info-see-more > a {
-  color: #4285f4;
+    color: #4285f4;
 }
 
 .gm-style-iw {
-  text-align: center;
+    text-align: center;
 }
 
 .credits {
-  position: fixed;
-  bottom: 0px;
-  background-color: rgba(255, 255, 255, .9);
-  padding: 5px;
-  border-radius: 3px;
+    position: fixed;
+    bottom: 0px;
+    background-color: rgba(255, 255, 255, .9);
+    padding: 5px;
+    border-radius: 3px;
 }
 
 /**
  * Google Map classes/id
  */
 .gm-iv-address {
-  display: none !important;
+    display: none !important;
 }
 
 .widget-scene-canvas {
-  width: 100% !important;
+    width: 100% !important;
 }
 
 @media screen and (max-height: 675px) {
-  #streetview {
-    height: 160px;
-    min-width: 220px;
-  }
+    #streetview {
+        height: 160px;
+        min-width: 220px;
+    }
 
-  .info {
-    max-height: 340px;
-  }
+    .info {
+        max-height: 340px;
+    }
 }
 
 @media screen and (max-width: 480px) {
-  .info {
-    max-width: 230px;
-  }
+    .info {
+        max-width: 230px;
+    }
 }

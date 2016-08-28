@@ -4,6 +4,6 @@
  */
 var map: any;
 declare var google: any;
-function initMap(){
+function initMap() {
     map = new GoogleMap(new Coords(30.4583, -91.1403), undefined, 13);
 }
