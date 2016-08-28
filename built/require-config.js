@@ -1,6 +1,6 @@
 require.config({
     paths: {
-        "knockout": "../externals/knockout.min"
+        "knockout": "/neighborhood-map/externals/knockout.min"
     }
 });
 //# sourceMappingURL=require-config.js.map
