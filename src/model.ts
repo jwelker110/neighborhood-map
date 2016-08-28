@@ -50,8 +50,8 @@ export class ViewModel {
   searchCallback = (resp:any) => {
     this.onSuccess();
     // set the locations in the google map and the model
-    this.map.setLocations(resp.response.venues);
-    this.setLocations(resp.response.venues);
+    this.map.setLocations(resp.response.groups[0].items, resp.response.geocode.center);
+    this.setLocations(resp.response.groups[0].items);
     this.setAction('filter');
   };
 
@@ -130,7 +130,10 @@ export class ViewModel {
       return;
     }
     let filtered = this.locations().filter((location: any): boolean => {
-      let match = location.name.toLowerCase().indexOf(this.filter().toLowerCase()) > -1;
+      let match = location.venue.name.toLowerCase().indexOf(this.filter().toLowerCase()) > -1;
+      if(location.venue.location.formattedAddress.length > 1 && !match) {  // no need to check if it already matched eh?
+        match = location.venue.location.formattedAddress[0].toLowerCase().indexOf(this.filter().toLowerCase()) > -1;
+      }
       if(!match && location.marker) {
         this.map.hideMarker(location.marker);
       } else if (!location.marker.map) {
