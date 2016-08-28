@@ -49,31 +49,19 @@ class GoogleMap {
     /**
      *
      */
-    setLocations = (locations: any[]) => {
+    setLocations = (locations: any[], center: Coords) => {
         this.removeAllMarkers();
         this.deleteAllMarkers();
         if(locations.length < 1) { return; }
 
-        // set the initial lat/lng coords
-        this.largestLat = this.smallestLat = locations[0].location.lat;
-        this.largestLng = this.smallestLng = locations[0].location.lng;
-
         for(let i = 0, l=locations.length; i < l; i++) {
             let loc = locations[i];
-            // calculate lat/lng coords
-            if(loc.location.lat > this.largestLat) {this.largestLat = loc.location.lat;}
-            if(loc.location.lat < this.smallestLat) {this.smallestLat = loc.location.lat;}
-            if(loc.location.lng > this.largestLng) {this.largestLng = loc.location.lng;}
-            if(loc.location.lng < this.smallestLng) {this.smallestLng = loc.location.lng;}
 
             // create the location on the map
-            loc.marker = this.createMarker(loc.location.lat, loc.location.lng);
+            loc.marker = this.createMarker(loc.venue.location.lat, loc.venue.location.lng);
         }
         // pan to lat/lng center of all markers
-        this.gMap.panTo({
-            lat: this.smallestLat + ((this.largestLat - this.smallestLat) / 2),
-            lng: this.smallestLng + ((this.largestLng - this.smallestLng) / 2)
-        });
+        this.gMap.panTo(center);
         // display the markers on the map
         this.addMarkersRecursively(locations, locations.length - 1);
         this.locations = locations;
@@ -127,26 +115,52 @@ class GoogleMap {
 
     /**
      * Generates html representation of place
-     * @param place - the place we want to represent
+     * @param item - the place we want to represent
      * @returns {string} - string containing html formatting
      */
-    getLocationContent = (place: any) => {
-        let title = '<h4 class="info-title">' + place.name + '</h4>';
+    getLocationContent = (item: any) => {
+        // get ready to make the venue name a link to it's FS page
+        let itemUrlStart = '';
+        let itemUrlEnd = '';
+        let itemUrl = '';
+        let itemTips = item.tips && item.tips.length > 0 ? item.tips[0] : {};
+
+        if(itemTips.canonicalUrl) {
+            itemUrlStart = '<div class="info-see-more">See more on <a target="_blank" href="' + itemTips.canonicalUrl + '">';
+            itemUrlEnd = '</a></div>';
+            itemUrl = itemUrlStart + 'FourSquare' + itemUrlEnd;
+        }
+
+        // get venue name
+        let name = '<h4 class="info-title">' + item.venue.name + '</h4>';
+
+        // get venue rating
+        let ratingContainer = '';
+        if(item.venue.rating) {
+            // let rating = '<div class="info-rating">Rated ' + item.venue.rating + '</div>';
+            let ratingCount = '<div class="info-rating"><span style="color: #' + item.venue.ratingColor + '">' +
+                item.venue.rating + '/10</span>' +
+                ' with ' + item.venue.ratingSignals + ' votes' +
+                '</div>';
+            ratingContainer = '<div class="info-rating-container">' + ratingCount + '</div>';
+        }
+
+        // get venue review
+        let review = 'No reviews available for this venue';
+        if(itemTips.text) {
+            review = '<div class="info-review"><em>"' + itemTips.text + '"</em> - ' + itemTips.user.firstName + '</div>';
+        }
+
         let streetViewContainer = '<div id="' + 'streetview' + '"></div>';
-        let url = place.url ? '<a class="info-website" href="' + place.url + '">On the Web</a>' : '';
-
-        let checkinsCount = place.stats ? place.stats.checkinsCount ? place.stats.checkinsCount : 'Unknown' : 'Unavailable';
-        let checkins = '<div class="info-checkins">Check-ins: <strong>' + checkinsCount + '</strong></div>';
-
-        let hereNowSummary = place.hereNow ? place.hereNow.summary ? place.hereNow.summary : 'Unknown visitors' : 'Visitors unavailable';
-        let hereNow = '<div class="info-checkins">' + hereNowSummary + ' right now.</div>';
 
         return (
             '<div class="info">' +
-                title +
-                checkins +
-                hereNow +
+                name +
+                // address +
                 streetViewContainer +
+                review +
+                ratingContainer +
+                itemUrl +
             '</div>'
         );
     };
