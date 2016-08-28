@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
-    <link rel="icon" href="static/img/favicon.png">
+    <link rel="icon" href="/static/img/favicon.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/style.css">
     <title>Neighborhood Map</title>
 </head>
 <body>
@@ -19,7 +20,7 @@
     <div id="list-filter-container">
         <form data-bind="event: {submit: searchSubmit}">
             <input id="list-filter-input"
-                   data-bind="textInput: filter, event: {input: filterLocations}, attr: {placeholder: searchAction() == 'filter' ? 'Filter results...' : 'Search e.g. Food near Baton Rouge...'}"
+                   data-bind="textInput: filter, event: {input: filterLocations}, attr: {placeholder: searchAction() == 'filter' ? 'Filter results...' : 'Search (e.g. Food near Baton Rouge)...'}"
                    type="text"
                    tabindex="1"
                    autofocus
@@ -37,10 +38,19 @@
         </div>
     </div>
     <div id="list-container" data-bind="css: isCollapsedComputed">
-        <div id="list-places" data-bind="foreach: filteredLocations().sort(function(a, b) {return a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0;})">
+        <div id="list-places"
+             data-bind="foreach: filteredLocations().sort(function(a, b) {
+             return a.venue.name.toLowerCase() < b.venue.name.toLowerCase() ? -1 : a.venue.name.toLowerCase() > b.venue.name.toLowerCase() ? 1 : 0;
+             })">
             <div class="list-place" data-bind="click: $parent.setCurrentLocation">
-                <h4><span class="list-place-name" data-bind="text: name"></span> <small class="list-place-category" data-bind="text: categories && categories.length > 0 ? categories[0].shortName : ''"></small></h4>
-                <div class="list-place-verified">This location<strong data-bind="text: verified ? ' has ' : ' has not '"></strong>been verified</div>
+                <div class="list-place-details">
+                    <h4>
+                        <span class="list-place-name" data-bind="text: venue.name"></span>
+                        <small class="list-place-price" data-bind="text: venue.price.message ? venue.price.message + ' prices' : 'Prices unavailable'"></small>
+                    </h4>
+                    <div class="list-place-address" data-bind="text: venue.location.formattedAddress[0]"></div>
+                    <div class="list-place-hours" data-bind="text: venue.hours.status ? venue.hours.status : 'Hours unavailable'"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -49,14 +59,14 @@
         <div class="list-pulldown-border"></div>
     </div>
 </div>
-<div id="attribution-foursquare"><a href="https://developer.foursquare.com/"><img id="attribution-foursquare-img" src="static/img/Powered-by-Foursquare-black-300.png"></a></div>
+<div id="attribution-foursquare"><a href="https://developer.foursquare.com/"><img id="attribution-foursquare-img" src="/static/img/Powered-by-Foursquare-black-300.png"></a></div>
 </body>
 <footer>
-    <script src="built/init.js"></script>
-    <script src="built/googlemap.js"></script>
+    <script src="init.js"></script>
+    <script src="googlemap.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZJz-OC0HG2ogLZ1uP_51QJiKkHh2ap0g&callback=initMap&libraries=places"
     type="text/javascript"></script>
-    <script data-main="built/main" src="externals/require.js"></script>
-    <script src="built/require-config.js"></script>
+    <script data-main="/main.js" src="/externals/require.js"></script>
+    <script src="require-config.js"></script>
 </footer>
 </html>
