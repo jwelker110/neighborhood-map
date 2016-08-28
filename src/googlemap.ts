@@ -190,7 +190,7 @@ class GoogleMap {
          * get first venue review
          * <div class="info-review"><em>review</em> - username</div>
          */
-        let review = 'No reviews available for this venue';
+        let review = '<div class="info-review">No reviews available for this venue</div>';
         if (itemTips.text) {
             review = '<div class="info-review"><em>"' + itemTips.text + '"</em> - ' + itemTips.user.firstName + '</div>';
         }

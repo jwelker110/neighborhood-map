@@ -158,7 +158,7 @@ var GoogleMap = (function () {
              * get first venue review
              * <div class="info-review"><em>review</em> - username</div>
              */
-            var review = 'No reviews available for this venue';
+            var review = '<div class="info-review">No reviews available for this venue</div>';
             if (itemTips.text) {
                 review = '<div class="info-review"><em>"' + itemTips.text + '"</em> - ' + itemTips.user.firstName + '</div>';
             }
