@@ -4,3 +4,4 @@ define(["require", "exports", "knockout", "model"], function (require, exports, 
     var vm = new model_1.ViewModel(map);
     ko.applyBindings(vm);
 });
+//# sourceMappingURL=main.js.map

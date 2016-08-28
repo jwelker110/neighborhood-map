@@ -1,0 +1,8 @@
+{
+  "name": "Neighborhood-Map",
+  "version": "1.0.0",
+  "description": "Neighborhood Map project for Udacity's Full Stack Web Developer nano degree",
+  "scripts": {
+    "start": "tsc && cp ./src/index.html ./built && cp -R ./static ./built && cp -R ./externals ./built"
+  }
+}
