@@ -16,12 +16,6 @@ class GoogleMap {
     markers: any[] = [];
     locations: any[] = [];
 
-    largestLat: number;
-    largestLng: number;
-
-    smallestLat: number;
-    smallestLng: number;
-
     markerClickedCallback: any;
 
     /**
