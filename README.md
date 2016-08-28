@@ -7,19 +7,14 @@ The map should present users with at least 5 locations/points of interest.
 Users should be able to select a location marker and be presented with that location's information, 
 queried from a 3rd party API.
 
+The live version can be found [here](https://jwelker110.github.io/neighborhood-map/).
+
 ### Frameworks/technologies used
 - [Bootstrap CSS](http://getbootstrap.com/)
-<<<<<<< HEAD
-- [Knockoutjs](https://knockoutjs.com/) - for Bootstrap
-- [Google Map API](https://developers.google.com/maps/)
-- [Flask](http://flask.pocoo.org) - Backend server that queries [Factual API](https://github.com/Factual/factual-python-driver)
-- [Factual](https://www.factual.com/solutions/developers) - Service providing place information
-=======
 - [Knockoutjs](https://knockoutjs.com/)
 - [Google Map API](https://developers.google.com/maps/)
 - [Google Street View API](https://developers.google.com/streetview/)
 - [FourSquare API](https://developer.foursquare.com/)
->>>>>>> master
 
 ### Project specifications - Per Udacity's project requirements
 
