@@ -225,6 +225,7 @@ a:hover {
 .info-review {
     font-size: .9em;
     font-weight: bold;
+    max-width: 480px;
 }
 
 .info-address {
@@ -280,5 +281,12 @@ a:hover {
 @media screen and (max-width: 480px) {
     .info {
         max-width: 230px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .info-rating,
+    .info-review {
+        max-width: 320px;
     }
 }
