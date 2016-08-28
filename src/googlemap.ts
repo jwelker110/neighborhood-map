@@ -57,9 +57,9 @@ class GoogleMap {
         }
 
         for (let i = 0, l = locations.length; i < l; i++) {
-            let loc = locations[i].venue.location;
+            let loc = locations[i];
             // create the location on the map
-            loc.marker = this.createMarker(loc.lat, loc.lng);
+            loc.marker = this.createMarker(loc.venue.location.lat, loc.venue.location.lng);
         }
 
         // pan to lat/lng center of all markers
