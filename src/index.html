@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
     <link rel="icon" href="/static/img/favicon.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
     <link rel="stylesheet" href="/static/css/style.css">
     <title>Neighborhood Map</title>
 </head>
@@ -46,10 +45,10 @@
                 <div class="list-place-details">
                     <h4>
                         <span class="list-place-name" data-bind="text: venue.name"></span>
-                        <small class="list-place-price" data-bind="text: venue.price.message ? venue.price.message + ' prices' : 'Prices unavailable'"></small>
+                        <small class="list-place-price" data-bind="text: venue.price && venue.price.message ? venue.price.message + ' prices' : 'Prices unavailable'"></small>
                     </h4>
-                    <div class="list-place-address" data-bind="text: venue.location.formattedAddress[0]"></div>
-                    <div class="list-place-hours" data-bind="text: venue.hours.status ? venue.hours.status : 'Hours unavailable'"></div>
+                    <div class="list-place-address" data-bind="text: venue.location ? venue.location.formattedAddress[0] : 'Address unavailable'"></div>
+                    <div class="list-place-hours" data-bind="text: venue.hours && venue.hours.status ? venue.hours.status : 'Hours unavailable'"></div>
                 </div>
             </div>
         </div>
