@@ -61,7 +61,7 @@ export class FourSquare {
      * @param onError - callback called when the request encounters an error
      */
     venuesSearch = (params: string[], callback: any, onError: any) => {
-        var ep = 'venues/search?';
+        var ep = 'venues/explore?';
 
         // generate our URL please
         var url = this.baseUrl + ep + params.join('&') + this.secretParams() + this.versionMethodParams();
