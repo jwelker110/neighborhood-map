@@ -23,7 +23,6 @@ a:hover {
 #streetview {
     border: solid 2px #4285f4;
     height: 200px;
-    min-width: 320px;
 }
 
 #streetview .gm-style-cc {
@@ -225,7 +224,7 @@ a:hover {
 .info-review {
     font-size: .9em;
     font-weight: bold;
-    max-width: 480px;
+    width: 480px;
 }
 
 .info-address {
@@ -282,11 +281,15 @@ a:hover {
     .info {
         max-width: 230px;
     }
+    .info-rating,
+    .info-review {
+        max-width: 230px;
+    }
 }
 
 @media screen and (max-width: 767px) {
     .info-rating,
     .info-review {
-        max-width: 320px;
+        width: 320px;
     }
 }
