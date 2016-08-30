@@ -1,5 +1,3 @@
-"use strict";
-
 /**
  * Class that creates a Google Map in the element associated with
  * the provided ID.
