@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Neighborhood Map project for Udacity's Full Stack Web Developer nano degree",
   "scripts": {
-    "start": "tsc && cp ./src/index.html ./built && cp -R ./static ./built && cp -R ./externals ./built"
+    "start": "tsc && cp ./src/index.html ./built && cp -R ./static ./built && cp -R ./externals ./built && http-server ./built -d -o -a localhost -p 8080"
+  },
+  "devDependencies": {
+    "http-server": "0.9.0",
+    "tsc": "1.20150623.0"
   }
 }
