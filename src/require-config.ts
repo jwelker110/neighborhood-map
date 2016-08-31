@@ -1,6 +1,1 @@
-declare var require: any;
-require.config({
-    paths: {
-        "knockout": "../externals/knockout.min"
-    }
-});
+// moved config to main.ts and loading main.ts using data-main
