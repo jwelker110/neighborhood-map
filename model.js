@@ -14,9 +14,20 @@ define(["require", "exports", "knockout", "./foursquare"], function (require, ex
              * @param resp - the response from the fs api
              */
             this.searchCallback = function (resp) {
+                var center = { lat: 0, lng: 0 };
+                if (!resp.response.geocode) {
+                    center = {
+                        lat: resp.response.suggestedBounds.ne.lat - ((resp.response.suggestedBounds.ne.lat - resp.response.suggestedBounds.sw.lat) / 2),
+                        lng: resp.response.suggestedBounds.sw.lng - ((resp.response.suggestedBounds.sw.lng - resp.response.suggestedBounds.ne.lng) / 2) };
+                }
+                else {
+                    center = resp.response.geocode.center;
+                    ;
+                }
+                console.log(resp);
                 _this.onSuccess();
                 // set the locations in the google map and the model
-                _this.map.setLocations(resp.response.groups[0].items, resp.response.geocode.center);
+                _this.map.setLocations(resp.response.groups[0].items, center);
                 _this.setLocations(resp.response.groups[0].items);
                 _this.setAction('filter');
             };
