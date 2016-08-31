@@ -1,6 +1,6 @@
 require.config({
     paths: {
-        "knockout": "../externals/knockout.min"
+        "knockout": "/externals/knockout.min"
     }
 });
 var map;
