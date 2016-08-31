@@ -67,8 +67,8 @@ the [Udacity JavaScript Style Guide](http://udacity.github.io/frontend-nanodegre
 
 1. [Clone](https://github.com/jwelker110/neighborhood-map.git) this repo.
 2. [Install](http://blog.npmjs.org/post/85484771375/how-to-install-npm) npm.
-3. `npm install` to install TypeScript compiler and http-server
-4. `cd` into the project's folder.
+3. `cd` into the project's folder. You should see the src and built folders here.
+4. `npm install` to install TypeScript compiler and http-server
 5. `npm start` to compile the files and serve using http-server.
 6. You will be able to access the map in a web browser by typing in `localhost:8080`.
 
