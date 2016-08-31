@@ -5,7 +5,7 @@
  * lambdas are used to preserve the lexical 'this' in the class
  * functions.
  */
-class GoogleMap {
+export class GoogleMap {
 
     gMap: any;
     infoWindow: any;
@@ -294,7 +294,7 @@ class GoogleMap {
  * Coords class used to contain latitude (lat) and
  * longitude (lng) coordinates.
  */
-class Coords {
+export class Coords {
     lat: number;
     lng: number;
 
