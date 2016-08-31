@@ -47,9 +47,17 @@ export class ViewModel {
      * @param resp - the response from the fs api
      */
     searchCallback = (resp: any) => {
+        let center = {lat: 0, lng: 0};
+        if(!resp.response.geocode) { // user did not use 'near' search
+            center = {
+                lat: resp.response.suggestedBounds.ne.lat - ((resp.response.suggestedBounds.ne.lat - resp.response.suggestedBounds.sw.lat) / 2),
+                lng: resp.response.suggestedBounds.sw.lng - ((resp.response.suggestedBounds.sw.lng - resp.response.suggestedBounds.ne.lng) / 2)}
+        } else {
+            center = resp.response.geocode.center;;
+        }
         this.onSuccess();
         // set the locations in the google map and the model
-        this.map.setLocations(resp.response.groups[0].items, resp.response.geocode.center);
+        this.map.setLocations(resp.response.groups[0].items, center);
         this.setLocations(resp.response.groups[0].items);
         this.setAction('filter');
     };
