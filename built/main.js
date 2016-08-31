@@ -20,6 +20,6 @@ function initMap() {
     });
 }
 function onMapError(err) {
-    console.log('an error occurred');
+    alert('An error occurred when loading the map. Please refresh the page and try again.');
 }
 //# sourceMappingURL=main.js.map

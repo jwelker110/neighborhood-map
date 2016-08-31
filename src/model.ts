@@ -53,7 +53,7 @@ export class ViewModel {
                 lat: resp.response.suggestedBounds.ne.lat - ((resp.response.suggestedBounds.ne.lat - resp.response.suggestedBounds.sw.lat) / 2),
                 lng: resp.response.suggestedBounds.sw.lng - ((resp.response.suggestedBounds.sw.lng - resp.response.suggestedBounds.ne.lng) / 2)}
         } else {
-            center = resp.response.geocode.center;;
+            center = resp.response.geocode.center;
         }
         this.onSuccess();
         // set the locations in the google map and the model
