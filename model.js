@@ -22,9 +22,7 @@ define(["require", "exports", "knockout", "./foursquare"], function (require, ex
                 }
                 else {
                     center = resp.response.geocode.center;
-                    ;
                 }
-                console.log(resp);
                 _this.onSuccess();
                 // set the locations in the google map and the model
                 _this.map.setLocations(resp.response.groups[0].items, center);
